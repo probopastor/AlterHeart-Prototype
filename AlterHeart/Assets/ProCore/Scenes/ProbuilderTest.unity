@@ -16660,6 +16660,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 506d07df5ba95664dbf68e762f9b5987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  realityController: {fileID: 1592342109}
+  crosshair: {fileID: 1028540475}
   pausePanel: {fileID: 14478416}
   howToPlayPanel: {fileID: 873034402}
   restartGameSceneToLoad: ProbuilderTest

@@ -34,9 +34,13 @@ public class RealityController : MonoBehaviour
 
     public ParticleSystem teleportParticles;
 
+    private bool realitiesPaused;
+
     private void Start()
     {
         currentReality = 1;
+
+        realitiesPaused = false;
 
         controlPanelDimension1.SetActive(true);
         controlPanelDimension2.SetActive(false);
@@ -149,6 +153,30 @@ public class RealityController : MonoBehaviour
             controlPanelDimension1.SetActive(true);
             controlPanelDimension2.SetActive(false);
         }
+    }
+
+    public void RealityPanelActivation()
+    {
+        if(!realitiesPaused)
+        {
+            realitiesPaused = true;
+            controlPanelDimension1.SetActive(false);
+            controlPanelDimension2.SetActive(false);
+        }
+        else if(realitiesPaused)
+        {
+            realitiesPaused = false;
+            if(currentReality == 1)
+            {
+                controlPanelDimension1.SetActive(true);
+            }
+            else if(currentReality == 2)
+            {
+                controlPanelDimension2.SetActive(true);
+            }
+
+        }
+
     }
 
     /*
