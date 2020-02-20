@@ -8,6 +8,8 @@ public class CameraController : MonoBehaviour
     public Sprite crossHairUnselected;
     public Sprite crossHairSelected;
 
+    public float clickDistance = 1f;
+
     public LayerMask raycastLayer;
     public LayerMask raycastLayerTeleporter;
     public LayerMask winLayer;
@@ -48,7 +50,7 @@ public class CameraController : MonoBehaviour
 
         
         // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, raycastLayer))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, raycastLayer))
         {
             crossHair.sprite = crossHairSelected;
 
@@ -62,7 +64,7 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, raycastLayerTeleporter))
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, raycastLayerTeleporter))
         {
             crossHair.sprite = crossHairSelected;
 
@@ -74,7 +76,7 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, winLayer))
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, winLayer))
         {
             crossHair.sprite = crossHairSelected;
 
