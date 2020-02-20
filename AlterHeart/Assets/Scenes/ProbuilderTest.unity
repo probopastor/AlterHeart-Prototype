@@ -16341,7 +16341,7 @@ MonoBehaviour:
   cameraAngle: {fileID: 1440544649}
   cameraTransform: {fileID: 1257616067}
   rc: {fileID: 1592342110}
-  moveSpeed: 50
+  moveSpeed: 20
   moveLimit: 10
   jumpForce: 0
   jumpForceDimension1: 0
