@@ -329,7 +329,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &135778349
 RectTransform:
   m_ObjectHideFlags: 0
@@ -622,7 +622,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &440081915
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1580,7 +1580,18 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Billy, Courtney, Kenzie, Scott, Trent!
+  m_Text: 'Scott Acker
+
+    Courtney Fancil
+
+    Trent Lewis
+
+    Kenzie Lindgren
+
+    William
+    Nomikos
+
+'
 --- !u!222 &1478015396
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1840,7 +1851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 3, y: -292}
+  m_AnchoredPosition: {x: 61.6, y: -292}
   m_SizeDelta: {x: 343.5, y: 269.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1626919916
@@ -1868,13 +1879,27 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 62
-    m_Alignment: 1
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '): You don''t get to know'
+  m_Text: 'WASD- Move
+
+    E- Dimension Switch
+
+    Left Click- Interact
+
+    ESC-
+    Pause
+
+    Move Mouse- Look Around
+
+
+    If In Dimension 2:
+
+    Space- Jump'
 --- !u!222 &1626919917
 CanvasRenderer:
   m_ObjectHideFlags: 0
