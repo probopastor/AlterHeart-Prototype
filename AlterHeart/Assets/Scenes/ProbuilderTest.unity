@@ -26726,8 +26726,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: -4}
-  m_SizeDelta: {x: 332.1, y: 128.4}
+  m_AnchoredPosition: {x: 2, y: 0.8}
+  m_SizeDelta: {x: 332.1, y: 149.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1998068414
 MonoBehaviour:
@@ -26760,9 +26760,21 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Some may say that there are no stupid questions. That is false. Asking
-    how to play a game you've never played before? Damn what a stupid question! Why
-    don't you just know this?! You insult me. Get out of my house.
+  m_Text: 'WASD- Move
+
+    E- Dimension Switch
+
+    Left Click- Interact
+
+    ESC-
+    Pause
+
+    Move Mouse- Look Around
+
+
+    If In Dimension 2:
+
+    Space- Jump'
 --- !u!222 &1998068415
 CanvasRenderer:
   m_ObjectHideFlags: 0
