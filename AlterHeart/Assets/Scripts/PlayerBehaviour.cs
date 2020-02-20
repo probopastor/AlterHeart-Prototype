@@ -79,11 +79,12 @@ public class PlayerBehaviour : MonoBehaviour
         //Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
         //rb.AddForce(playerForce);
 
-        if (rb.velocity.x < moveLimit || rb.velocity.y < moveLimit)
+        if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
         {
             Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
             rb.AddForce(playerForce);
         }
+        Debug.Log("x vel " + rb.velocity.x + "z vel " + rb.velocity.z);
     }
 
     private void OnTriggerEnter(Collider other)
