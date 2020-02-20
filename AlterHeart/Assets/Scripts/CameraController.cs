@@ -1,10 +1,4 @@
-﻿/*****************************************************************************
-// File Name: CameraController.cs
-// Author:
-// Creation Date: 2/6/2020
-//
-// Brief Description:
-*****************************************************************************/
+﻿//TEST 1
 
 using UnityEngine;
 using UnityEngine.UI;
