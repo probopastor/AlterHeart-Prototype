@@ -20,9 +20,8 @@ public class PlayerBehaviour : MonoBehaviour
     public RealityController rc;
 
     public float moveSpeed;
+    public float moveLimit = 10;
     public float jumpForce;
-
-
 
     private void Start()
     {
@@ -34,6 +33,33 @@ public class PlayerBehaviour : MonoBehaviour
         // heading += Input.GetAxis("Mouse X") * Time.deltaTime * mouseSensitivity;
         //cameraAngle.rotation = Quaternion.Euler(0, heading, 0);
 
+        
+        //transform.position += (camF * input.y + camR * input.x) * Time.deltaTime * moveSpeed;
+
+        //rb.MovePosition(Vector3.Lerp(rb.velocity, new Vector3(), 1))
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            Jump();
+        }
+
+        Movement();
+    }
+
+    
+    private void Movement()
+    {
+        //float xMove = Input.GetAxis("Horizontal");
+        //float zMove = Input.GetAxis("Vertical");
+
+        //xMove *= moveSpeed * Time.deltaTime;
+        //zMove *= moveSpeed * Time.deltaTime;
+
+        //if (xMove != 0 || zMove != 0)
+        //{
+        //    //rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(xMove, rb.velocity.y, zMove), 1);
+        //    rb.MovePosition(Vector3.Lerp(rb.velocity, new Vector3(xMove, rb.velocity.y, zMove), 1));
+        //}
 
         input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         input = Vector2.ClampMagnitude(input, 1);
@@ -45,35 +71,16 @@ public class PlayerBehaviour : MonoBehaviour
         camR.y = 0;
         camF = camF.normalized;
         camR = camR.normalized;
-        //transform.position += (camF * input.y + camR * input.x) * Time.deltaTime * moveSpeed;
 
-        Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
+        //Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
+        //rb.AddForce(playerForce);
 
-        rb.AddForce(playerForce);
-
-        //rb.MovePosition(Vector3.Lerp(rb.velocity, new Vector3(), 1))
-
-        if (Input.GetButtonDown("Jump"))
+        if (rb.velocity.x < moveLimit || rb.velocity.y < moveLimit)
         {
-            Jump();
+            Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
+            rb.AddForce(playerForce);
         }
     }
-
-    /*
-    private void Movement()
-    {
-        float xMove = Input.GetAxis("Horizontal");
-        float zMove = Input.GetAxis("Vertical");
-
-        xMove *= moveSpeed * Time.deltaTime;
-        zMove *= moveSpeed * Time.deltaTime;
-
-        if (xMove != 0 || zMove != 0)
-        {
-            //rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(xMove, rb.velocity.y, zMove), 1);
-            rb.MovePosition(Vector3.Lerp(rb.velocity, new Vector3(xMove, rb.velocity.y, zMove), 1));
-        }
-    }*/
 
     private void OnTriggerEnter(Collider other)
     {
