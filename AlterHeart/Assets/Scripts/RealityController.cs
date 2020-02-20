@@ -13,12 +13,14 @@ using UnityEngine.UI;
 
 public class RealityController : MonoBehaviour
 {
+    public GameObject controlPanelDimension1;
+    public GameObject controlPanelDimension2;
+
     public Light directionalLight;
     public Color[] dimensionLightColor;
 
     public Transform teleportRealityOne;
     public Transform teleportRealityTwo;
-    //private Vector3 teleportDistance;
 
     public GameObject player;
 
@@ -36,10 +38,12 @@ public class RealityController : MonoBehaviour
     {
         currentReality = 1;
 
-     //   flashAlpha = 0;
-      //  Color temp = whiteFlash.color;
+        controlPanelDimension1.SetActive(true);
+        controlPanelDimension2.SetActive(false);
+        //   flashAlpha = 0;
+        //  Color temp = whiteFlash.color;
 
-       // temp.a = flashAlpha;
+        // temp.a = flashAlpha;
         //whiteFlash.color = temp;
 
         //myLighting.color = r1Light;
@@ -132,11 +136,18 @@ public class RealityController : MonoBehaviour
         {
             currentReality = 2;
             player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
+
+            controlPanelDimension1.SetActive(false);
+            controlPanelDimension2.SetActive(true);
         }
         else if(currentReality == 2)
         {
             currentReality = 1;
             player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
+
+
+            controlPanelDimension1.SetActive(true);
+            controlPanelDimension2.SetActive(false);
         }
     }
 
