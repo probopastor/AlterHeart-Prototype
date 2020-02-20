@@ -23,9 +23,13 @@ public class PlayerBehaviour : MonoBehaviour
     public float moveLimit = 10;
     public float jumpForce;
 
+    public float jumpForceDimension1 = 0f;
+    public float jumpForceDimension2 = 1f;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        jumpForce = jumpForceDimension1;
     }
     private void Update()
     {
