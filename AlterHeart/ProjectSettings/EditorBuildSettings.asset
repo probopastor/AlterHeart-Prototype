@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/ProCore/Scenes/MainMenu.unity
+    guid: fc3643ab178ce0e4f9fea6ee12187a83
+  - enabled: 1
     path: Assets/ProCore/Scenes/ScottTest.unity
     guid: 8b9c5012cb6006b4e8a29433ddb64d6d
   - enabled: 1
@@ -17,7 +20,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ProCore/Scenes/ProbuilderTest.unity
     guid: ae5b3266befdb7e4bafde05c2ed6fa6d
-  - enabled: 1
-    path: Assets/ProCore/Scenes/MainMenu.unity
-    guid: fc3643ab178ce0e4f9fea6ee12187a83
   m_configObjects: {}

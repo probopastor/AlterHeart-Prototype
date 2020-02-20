@@ -14,6 +14,9 @@ public class PauseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         pausePanel.SetActive(false);
         howToPlayPanel.SetActive(false);
         isPaused = false;
@@ -35,6 +38,7 @@ public class PauseManager : MonoBehaviour
             isPaused = true;
             pausePanel.SetActive(true);
             howToPlayPanel.SetActive(false);
+            Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
             Time.timeScale = 0;
         }
@@ -42,6 +46,7 @@ public class PauseManager : MonoBehaviour
         {
             isPaused = false;
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             pausePanel.SetActive(false);
             howToPlayPanel.SetActive(false);
             Time.timeScale = 1;
