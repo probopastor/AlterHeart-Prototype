@@ -45,7 +45,13 @@ public class PlayerBehaviour : MonoBehaviour
         camR.y = 0;
         camF = camF.normalized;
         camR = camR.normalized;
-        transform.position += (camF * input.y + camR * input.x) * Time.deltaTime * moveSpeed;
+        //transform.position += (camF * input.y + camR * input.x) * Time.deltaTime * moveSpeed;
+
+        Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
+
+        rb.AddForce(playerForce);
+
+        //rb.MovePosition(Vector3.Lerp(rb.velocity, new Vector3(), 1))
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -53,6 +59,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    /*
     private void Movement()
     {
         float xMove = Input.GetAxis("Horizontal");
@@ -66,7 +73,7 @@ public class PlayerBehaviour : MonoBehaviour
             //rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(xMove, rb.velocity.y, zMove), 1);
             rb.MovePosition(Vector3.Lerp(rb.velocity, new Vector3(xMove, rb.velocity.y, zMove), 1));
         }
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
