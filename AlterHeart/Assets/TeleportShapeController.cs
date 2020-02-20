@@ -12,5 +12,6 @@ public class TeleportShapeController : MonoBehaviour
     {
         Debug.Log("wonk? ");
         player.transform.position = pointToTeleport.transform.position;
+        player.GetComponent<PlayerBehaviour>().secondPhase = true;
     }
 }

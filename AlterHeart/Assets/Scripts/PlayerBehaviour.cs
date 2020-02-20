@@ -7,6 +7,7 @@
 *****************************************************************************/
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -26,13 +27,25 @@ public class PlayerBehaviour : MonoBehaviour
     public float jumpForceDimension1 = 0f;
     public float jumpForceDimension2 = 1f;
 
+    public bool secondPhase;
+    public GameObject secondPhaseStart;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        secondPhase = false;
         jumpForce = jumpForceDimension1;
     }
     private void Update()
     {
+        if((gameObject.transform.position.y <= -1.5f) && !secondPhase)
+        {
+            SceneManager.LoadScene("ProbuilderTest");
+        }
+        else if((gameObject.transform.position.y <= -1.5f) && secondPhase)
+        {
+            gameObject.transform.position = secondPhaseStart.transform.position;
+        }
         //Rotate camera 180 degrees per second based on Mouse X Movement
         // heading += Input.GetAxis("Mouse X") * Time.deltaTime * mouseSensitivity;
         //cameraAngle.rotation = Quaternion.Euler(0, heading, 0);
