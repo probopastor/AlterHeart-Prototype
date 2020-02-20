@@ -13,12 +13,14 @@ using UnityEngine.UI;
 
 public class RealityController : MonoBehaviour
 {
+    public GameObject controlPanelDimension1;
+    public GameObject controlPanelDimension2;
+
     public Light directionalLight;
     public Color[] dimensionLightColor;
 
     public Transform teleportRealityOne;
     public Transform teleportRealityTwo;
-    //private Vector3 teleportDistance;
 
     public GameObject player;
 
@@ -32,14 +34,20 @@ public class RealityController : MonoBehaviour
 
     public ParticleSystem teleportParticles;
 
+    private bool realitiesPaused;
+
     private void Start()
     {
         currentReality = 1;
 
-     //   flashAlpha = 0;
-      //  Color temp = whiteFlash.color;
+        realitiesPaused = false;
 
-       // temp.a = flashAlpha;
+        controlPanelDimension1.SetActive(true);
+        controlPanelDimension2.SetActive(false);
+        //   flashAlpha = 0;
+        //  Color temp = whiteFlash.color;
+
+        // temp.a = flashAlpha;
         //whiteFlash.color = temp;
 
         //myLighting.color = r1Light;
@@ -83,6 +91,7 @@ public class RealityController : MonoBehaviour
             for (int i = 0; i < DimensionOnePoints.Length; i++)
             {
                 float thisDist = DimensionOnePoints[i].GetComponent<TeleportPoints>().CompareDistance(player.transform.position);
+
                 //Debug.Log("thisDist A: " + thisDist);
 
                 if (thisDist < lowestDist)
@@ -130,11 +139,44 @@ public class RealityController : MonoBehaviour
         if (currentReality == 1)
         {
             currentReality = 2;
+            player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
+
+            controlPanelDimension1.SetActive(false);
+            controlPanelDimension2.SetActive(true);
         }
         else if(currentReality == 2)
         {
             currentReality = 1;
+            player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
+
+
+            controlPanelDimension1.SetActive(true);
+            controlPanelDimension2.SetActive(false);
         }
+    }
+
+    public void RealityPanelActivation()
+    {
+        if(!realitiesPaused)
+        {
+            realitiesPaused = true;
+            controlPanelDimension1.SetActive(false);
+            controlPanelDimension2.SetActive(false);
+        }
+        else if(realitiesPaused)
+        {
+            realitiesPaused = false;
+            if(currentReality == 1)
+            {
+                controlPanelDimension1.SetActive(true);
+            }
+            else if(currentReality == 2)
+            {
+                controlPanelDimension2.SetActive(true);
+            }
+
+        }
+
     }
 
     /*
