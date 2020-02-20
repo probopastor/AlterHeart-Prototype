@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
 
     public LayerMask raycastLayer;
     public LayerMask raycastLayerTeleporter;
+    public LayerMask winLayer;
 
     public float spherecastRadius = 1f;
 
@@ -70,6 +71,18 @@ public class CameraController : MonoBehaviour
                 if (hit.collider.GetComponent<TeleportShapeController>() != null)
                 {
                     hit.collider.GetComponent<TeleportShapeController>().TeleportPlayerToPoint();
+                }
+            }
+        }
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, winLayer))
+        {
+            crossHair.sprite = crossHairSelected;
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                if (hit.collider.GetComponent<WinShapeController>() != null)
+                {
+                    hit.collider.GetComponent<WinShapeController>().Win();
                 }
             }
         }
