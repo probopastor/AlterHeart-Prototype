@@ -15,6 +15,8 @@ public class CameraController : MonoBehaviour
     public Sprite crossHairSelected;
 
     public LayerMask raycastLayer;
+    public LayerMask raycastLayerTeleporter;
+
     public float spherecastRadius = 1f;
 
     public float mouseSensitivity = 100f;
@@ -62,6 +64,18 @@ public class CameraController : MonoBehaviour
                 if (hit.collider.GetComponent<ButtonController>() != null)
                 {
                     hit.collider.GetComponent<ButtonController>().PushButton();
+                }
+            }
+        }
+        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, raycastLayerTeleporter))
+        {
+            crossHair.sprite = crossHairSelected;
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                if (hit.collider.GetComponent<TeleportShapeController>() != null)
+                {
+                    hit.collider.GetComponent<TeleportShapeController>().TeleportPlayerToPoint();
                 }
             }
         }
