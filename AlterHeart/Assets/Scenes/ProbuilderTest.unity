@@ -14771,7 +14771,10 @@ MonoBehaviour:
   cameraTransform: {fileID: 1257616067}
   rc: {fileID: 1592342110}
   moveSpeed: 50
-  jumpForce: 400
+  moveLimit: 10
+  jumpForce: 0
+  jumpForceDimension1: 0
+  jumpForceDimension2: 400
 --- !u!54 &1440544645
 Rigidbody:
   m_ObjectHideFlags: 0

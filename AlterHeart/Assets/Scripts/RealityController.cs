@@ -83,6 +83,7 @@ public class RealityController : MonoBehaviour
             for (int i = 0; i < DimensionOnePoints.Length; i++)
             {
                 float thisDist = DimensionOnePoints[i].GetComponent<TeleportPoints>().CompareDistance(player.transform.position);
+
                 //Debug.Log("thisDist A: " + thisDist);
 
                 if (thisDist < lowestDist)
@@ -130,10 +131,12 @@ public class RealityController : MonoBehaviour
         if (currentReality == 1)
         {
             currentReality = 2;
+            player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
         }
         else if(currentReality == 2)
         {
             currentReality = 1;
+            player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
         }
     }
 
