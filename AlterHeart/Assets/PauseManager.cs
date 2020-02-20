@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
+    public GameObject realityController;
+    public GameObject crosshair;
+
     public GameObject pausePanel;
     public GameObject howToPlayPanel;
 
@@ -14,6 +17,10 @@ public class PauseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        crosshair.SetActive(true);
         pausePanel.SetActive(false);
         howToPlayPanel.SetActive(false);
         isPaused = false;
@@ -33,8 +40,10 @@ public class PauseManager : MonoBehaviour
         if(!isPaused)
         {
             isPaused = true;
+            crosshair.SetActive(false);
             pausePanel.SetActive(true);
             howToPlayPanel.SetActive(false);
+            Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
             Time.timeScale = 0;
         }
@@ -42,10 +51,14 @@ public class PauseManager : MonoBehaviour
         {
             isPaused = false;
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            crosshair.SetActive(true);
             pausePanel.SetActive(false);
             howToPlayPanel.SetActive(false);
             Time.timeScale = 1;
         }
+
+        realityController.GetComponent<RealityController>().RealityPanelActivation();
     }
 
     public void RestartGame()
