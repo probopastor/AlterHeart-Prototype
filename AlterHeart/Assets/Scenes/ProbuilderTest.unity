@@ -18219,7 +18219,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh285796
+  m_Name: pb_Mesh29294
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -64839,13 +64839,11 @@ MonoBehaviour:
   controlPanelDimension2: {fileID: 1339586196}
   directionalLight: {fileID: 898322349}
   dimensionLightColor:
-  - {r: 0.003921569, g: 0.24705882, b: 0.20784314, a: 1}
+  - {r: 0.021804927, g: 0.6603774, b: 0.55738175, a: 1}
   - {r: 0.8627451, g: 0.7137255, b: 0.76862746, a: 1}
   teleportRealityOne: {fileID: 1441614601}
   teleportRealityTwo: {fileID: 1333563696}
   player: {fileID: 1440544643}
-  whiteFlash: {fileID: 0}
-  flashSpeed: 10
   teleportParticles: {fileID: 0}
 --- !u!4 &1592342111
 Transform:

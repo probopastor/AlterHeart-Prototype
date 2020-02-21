@@ -38,14 +38,15 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void Update()
     {
-        if((gameObject.transform.position.y <= -1.5f) && !secondPhase)
+        if ((gameObject.transform.position.y <= -1.5f) && !secondPhase)
         {
             SceneManager.LoadScene("ProbuilderTest");
         }
-        else if((gameObject.transform.position.y <= -1.5f) && secondPhase)
+        else if ((gameObject.transform.position.y <= -1.5f) && secondPhase)
         {
             gameObject.transform.position = secondPhaseStart.transform.position;
         }
+
         //Rotate camera 180 degrees per second based on Mouse X Movement
         // heading += Input.GetAxis("Mouse X") * Time.deltaTime * mouseSensitivity;
         //cameraAngle.rotation = Quaternion.Euler(0, heading, 0);
@@ -94,10 +95,13 @@ public class PlayerBehaviour : MonoBehaviour
 
         if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
         {
+            //GLITCH: Currently only causes diagonal movement to be limited, though not noticeable at 30 
             Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
+            //Vector3 playerForce = new Vector3(camR.x * input.x, 0, camF.z * input.y) * moveSpeed;
             rb.AddForce(playerForce);
         }
-        Debug.Log("x vel " + rb.velocity.x + "z vel " + rb.velocity.z);
+        
+        Debug.Log("x vel " + rb.velocity.x + "\nz vel " + rb.velocity.z);
     }
 
     private void OnTriggerEnter(Collider other)

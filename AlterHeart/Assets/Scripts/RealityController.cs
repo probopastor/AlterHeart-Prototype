@@ -28,13 +28,10 @@ public class RealityController : MonoBehaviour
     private GameObject[] DimensionOnePoints;
     private GameObject[] DimensionTwoPoints;
 
-    public Image whiteFlash;
-    public float flashSpeed = 10;
-    float flashAlpha;
-
     public ParticleSystem teleportParticles;
 
     private bool realitiesPaused;
+    private bool canSwap = true;
 
     private void Start()
     {
@@ -44,12 +41,6 @@ public class RealityController : MonoBehaviour
 
         controlPanelDimension1.SetActive(true);
         controlPanelDimension2.SetActive(false);
-        //   flashAlpha = 0;
-        //  Color temp = whiteFlash.color;
-
-        // temp.a = flashAlpha;
-        //whiteFlash.color = temp;
-
         //myLighting.color = r1Light;
         DimensionOnePoints = GameObject.FindGameObjectsWithTag("DimensionOnePoints");
         DimensionTwoPoints = GameObject.FindGameObjectsWithTag("DimensionTwoPoints");
@@ -128,30 +119,33 @@ public class RealityController : MonoBehaviour
     //Switches reality by teleporting 
     private IEnumerator SwitchReality()
     {
-        //player.GetComponent<PlayerBehaviour>().Jump();
-        //StartCoroutine(ActivateParticles());
-        yield return new WaitForSeconds(1f);
-        Vector3 newPos = player.transform.position;
-
-        newPos = ClosestPoint();
-        player.transform.position = newPos;
-
-        if (currentReality == 1)
+        if(canSwap)
         {
-            currentReality = 2;
-            player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
+            canSwap = false;
+            Vector3 newPos = player.transform.position;
 
-            controlPanelDimension1.SetActive(false);
-            controlPanelDimension2.SetActive(true);
-        }
-        else if(currentReality == 2)
-        {
-            currentReality = 1;
-            player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
+            newPos = ClosestPoint();
+            player.transform.position = newPos;
+
+            if (currentReality == 1)
+            {
+                currentReality = 2;
+                player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
+
+                controlPanelDimension1.SetActive(false);
+                controlPanelDimension2.SetActive(true);
+            }
+            else if (currentReality == 2)
+            {
+                currentReality = 1;
+                player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
 
 
-            controlPanelDimension1.SetActive(true);
-            controlPanelDimension2.SetActive(false);
+                controlPanelDimension1.SetActive(true);
+                controlPanelDimension2.SetActive(false);
+            }
+            yield return new WaitForSeconds(.5f); //cooldown for swapping realities
+            canSwap = true;
         }
     }
 
@@ -178,29 +172,4 @@ public class RealityController : MonoBehaviour
         }
 
     }
-
-    /*
-    IEnumerator Flash()
-    {
-        Color temp = whiteFlash.color;
-
-        while (flashAlpha < 255)
-        {
-            yield return new WaitForSeconds(.1f);
-            flashAlpha += flashSpeed;
-            temp.a = flashAlpha;
-            whiteFlash.color = temp;
-        }
-
-        yield return new WaitForSeconds(.01f);
-
-        while (flashAlpha > 0)
-        {
-            yield return new WaitForSeconds(.1f);
-            flashAlpha -= flashSpeed;
-            temp.a = flashAlpha;
-            whiteFlash.color = temp;
-        }
-
-    }*/
 }
