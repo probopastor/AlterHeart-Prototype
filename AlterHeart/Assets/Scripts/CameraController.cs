@@ -22,9 +22,14 @@ public class CameraController : MonoBehaviour
 
     private Vector3 startPos;
 
+    float mouseX;
+    float mouseY;
+
     private void Start()
     {
         crossHair.sprite = crossHairUnselected;
+        mouseX = 0;
+        mouseY = 0;
 
         //Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
         //Cursor.lockState = CursorLockMode.None;
@@ -35,8 +40,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90, 90);

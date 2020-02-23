@@ -23,6 +23,7 @@ public class PlayerBehaviour : MonoBehaviour
     public float moveSpeed;
     public float moveLimit = 10;
     public float jumpForce;
+    public float fallForce = 2;
 
     public float jumpForceDimension1 = 0f;
     public float jumpForceDimension2 = 1f;
@@ -35,9 +36,12 @@ public class PlayerBehaviour : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         secondPhase = false;
         jumpForce = jumpForceDimension1;
+        //Physics.gravity = new Vector3(0, -9.81f, 0);
     }
+
     private void Update()
     {
+        print(Physics.gravity);
         if ((gameObject.transform.position.y <= -1.5f) && !secondPhase)
         {
             SceneManager.LoadScene("ProbuilderTest");
@@ -67,18 +71,6 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void Movement()
     {
-        //float xMove = Input.GetAxis("Horizontal");
-        //float zMove = Input.GetAxis("Vertical");
-
-        //xMove *= moveSpeed * Time.deltaTime;
-        //zMove *= moveSpeed * Time.deltaTime;
-
-        //if (xMove != 0 || zMove != 0)
-        //{
-        //    //rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(xMove, rb.velocity.y, zMove), 1);
-        //    rb.MovePosition(Vector3.Lerp(rb.velocity, new Vector3(xMove, rb.velocity.y, zMove), 1));
-        //}
-
         input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         input = Vector2.ClampMagnitude(input, 1);
 
@@ -90,18 +82,24 @@ public class PlayerBehaviour : MonoBehaviour
         camF = camF.normalized;
         camR = camR.normalized;
 
-        //Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
-        //rb.AddForce(playerForce);
-
         if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
         {
             //GLITCH: Currently only causes diagonal movement to be limited, though not noticeable at 30 
-            Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
-            //Vector3 playerForce = new Vector3(camR.x * input.x, 0, camF.z * input.y) * moveSpeed;
-            rb.AddForce(playerForce);
+            //Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
+            //rb.AddForce(playerForce);
+
+            Vector3 targetDirection = new Vector3(input.x, 0f, input.y);
+            targetDirection = Camera.main.transform.TransformDirection(targetDirection) * moveSpeed;
+            targetDirection.y = 0.0f;
+            rb.AddForce(targetDirection);
         }
-        
-        Debug.Log("x vel " + rb.velocity.x + "\nz vel " + rb.velocity.z);
+
+        if(!OnGround())
+        {
+            rb.AddForce(0, -fallForce, 0);
+        }
+
+        Debug.Log("x vel: " + rb.velocity.x + ". z vel: " + rb.velocity.z);
     }
 
     private void OnTriggerEnter(Collider other)
