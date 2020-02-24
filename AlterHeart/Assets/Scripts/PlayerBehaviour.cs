@@ -99,7 +99,7 @@ public class PlayerBehaviour : MonoBehaviour
             rb.AddForce(0, -fallForce, 0);
         }
 
-        Debug.Log("x vel: " + rb.velocity.x + ". z vel: " + rb.velocity.z);
+        //Debug.Log("x vel: " + rb.velocity.x + ". z vel: " + rb.velocity.z);
     }
 
     private void OnTriggerEnter(Collider other)
