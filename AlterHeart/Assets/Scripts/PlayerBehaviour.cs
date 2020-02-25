@@ -36,12 +36,11 @@ public class PlayerBehaviour : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         secondPhase = false;
         jumpForce = jumpForceDimension1;
-        //Physics.gravity = new Vector3(0, -9.81f, 0);
     }
 
     private void Update()
     {
-        print(Physics.gravity);
+        //print(Physics.gravity);
         if ((gameObject.transform.position.y <= -1.5f) && !secondPhase)
         {
             SceneManager.LoadScene("ProbuilderTest");
@@ -50,15 +49,6 @@ public class PlayerBehaviour : MonoBehaviour
         {
             gameObject.transform.position = secondPhaseStart.transform.position;
         }
-
-        //Rotate camera 180 degrees per second based on Mouse X Movement
-        // heading += Input.GetAxis("Mouse X") * Time.deltaTime * mouseSensitivity;
-        //cameraAngle.rotation = Quaternion.Euler(0, heading, 0);
-
-        
-        //transform.position += (camF * input.y + camR * input.x) * Time.deltaTime * moveSpeed;
-
-        //rb.MovePosition(Vector3.Lerp(rb.velocity, new Vector3(), 1))
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -84,10 +74,6 @@ public class PlayerBehaviour : MonoBehaviour
 
         if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
         {
-            //GLITCH: Currently only causes diagonal movement to be limited, though not noticeable at 30 
-            //Vector3 playerForce = ((camF * input.y + camR * input.x) * moveSpeed);
-            //rb.AddForce(playerForce);
-
             Vector3 targetDirection = new Vector3(input.x, 0f, input.y);
             targetDirection = Camera.main.transform.TransformDirection(targetDirection) * moveSpeed;
             targetDirection.y = 0.0f;
@@ -98,8 +84,6 @@ public class PlayerBehaviour : MonoBehaviour
         {
             rb.AddForce(0, -fallForce, 0);
         }
-
-        //Debug.Log("x vel: " + rb.velocity.x + ". z vel: " + rb.velocity.z);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -58,7 +58,7 @@ public class PauseManager : MonoBehaviour
             Time.timeScale = 1;
         }
 
-        realityController.GetComponent<RealityController>().RealityPanelActivation();
+        //realityController.GetComponent<RealityController>().RealityPanelActivation();
     }
 
     public void RestartGame()
