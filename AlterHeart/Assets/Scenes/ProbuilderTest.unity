@@ -55642,7 +55642,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440544643}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1440544649
 Transform:
   m_ObjectHideFlags: 0
@@ -64779,7 +64779,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb5471747a15db49bc79bfcabbefe1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canTeleport: 0
   collisionSphere: {fileID: 2075960594286070272, guid: 95432d0a6ae6faa40b45177b19a301bc,
     type: 3}
   teleportationDistance: {x: 0, y: 0, z: 20}

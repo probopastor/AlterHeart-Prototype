@@ -8,12 +8,13 @@ public class CollisionSphere : MonoBehaviour
     public PlayerBehaviour player;
 
     public RealityController thisReality;
+
     // Start is called before the first frame update
     void Start()
     {
         //thisReality = FindObjectOfType<RealityController>();
-        player = FindObjectOfType<PlayerBehaviour>();
-        Destroy(gameObject, destructionTime);
+        //player = FindObjectOfType<PlayerBehaviour>();
+       // Destroy(gameObject, destructionTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -24,7 +25,9 @@ public class CollisionSphere : MonoBehaviour
         {
             if (other.CompareTag("Obstacle"))
             {
+                RealityController.canTeleport = false;
 
+                //thisReality.canTeleport = false;
                 Debug.Log("I'm touching an Obstacle! Oh no! ");
 
                 //thisReality.canTeleport = false;
@@ -35,7 +38,7 @@ public class CollisionSphere : MonoBehaviour
             {
                 Debug.Log("Teleport possible. ");
 
-                player.GetComponent<Transform>().position = gameObject.transform.position;
+                RealityController.canTeleport = true;
                 //thisReality.canTeleport = true;
             }
         }

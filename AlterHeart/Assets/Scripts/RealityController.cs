@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 public class RealityController : MonoBehaviour
 {
-    public bool canTeleport;
+    public static bool canTeleport;
     public GameObject collisionSphere;
     public Vector3 teleportationDistance = new Vector3(0, 0, 0);
     private Vector3 playerTeleportDistance;
@@ -35,19 +35,20 @@ public class RealityController : MonoBehaviour
 
     public ParticleSystem teleportParticles;
 
+    private CollisionSphere currentSphere;
+
     private bool realitiesPaused;
-    private bool canSwap = true;
 
     private void Start()
     {
         canTeleport = false;
 
-        //currentReality = 1;
+        currentReality = 1;
 
-        //realitiesPaused = false;
+        realitiesPaused = false;
 
-        //controlPanelDimension1.SetActive(true);
-        //controlPanelDimension2.SetActive(false);
+        controlPanelDimension1.SetActive(true);
+        controlPanelDimension2.SetActive(false);
         ////myLighting.color = r1Light;
         //DimensionOnePoints = GameObject.FindGameObjectsWithTag("DimensionOnePoints");
         //DimensionTwoPoints = GameObject.FindGameObjectsWithTag("DimensionTwoPoints");
@@ -86,21 +87,46 @@ public class RealityController : MonoBehaviour
     {
         //Debug.Log("Swap realities coroutine started. ");
 
-        playerTeleportDistance = teleportationDistance + player.transform.position;
-        GameObject collisionSphereClone = Instantiate(collisionSphere, playerTeleportDistance, player.transform.rotation);
-        //if(canTeleport)
-        //{
-        //    Debug.Log("canTeleport triggered. ");
-        //    player.transform.position = teleportationDistance;
-        //}
-        //else
-        //{
-        //    Debug.Log("Can't teleport you ugly human. Think about what you've done! ");
-        //}
+        if (currentReality == 1)
+        {
+            //playerTeleportDistance = teleportationDistance - player.transform.position;
+            //GameObject collisionSphereClone = Instantiate(collisionSphere, new Vector3(-playerTeleportDistance.x, playerTeleportDistance.y, -playerTeleportDistance.z), player.transform.rotation);
+
+            GameObject collisionSphereClone = Instantiate(collisionSphere, new Vector3(119.9f, 1.75f, 282.8f), player.transform.rotation);
+            currentSphere = FindObjectOfType<CollisionSphere>();
+
+            if (canTeleport)
+            {
+                currentReality = 2;
+                player.transform.position = currentSphere.transform.position;
+                controlPanelDimension1.SetActive(false);
+                controlPanelDimension2.SetActive(true);
+            }
+            Destroy(collisionSphereClone, 1);
+        }
+        else if (currentReality == 2)
+        {
+            GameObject collisionSphereClone = Instantiate(collisionSphere, new Vector3(119.9f, 1.75f, 190.73f), player.transform.rotation);
+            currentSphere = FindObjectOfType<CollisionSphere>();
+
+            if (canTeleport)
+            {
+                currentReality = 1;
+
+                player.transform.position = currentSphere.transform.position;
+                controlPanelDimension1.SetActive(true);
+                controlPanelDimension2.SetActive(false);
+            }
+            Destroy(collisionSphereClone, 1);
+
+            //playerTeleportDistance = teleportationDistance + player.transform.position;
+            //GameObject collisionSphereClone = Instantiate(collisionSphere, playerTeleportDistance, player.transform.rotation);
+        }
+
 
         yield return new WaitForSeconds(0.1f);
     }
-    
+
 
     //Decides which TeleportPoint in the current dimension is closest
     //private Vector3 ClosestPoint()
@@ -177,26 +203,26 @@ public class RealityController : MonoBehaviour
     //    }
     //}
 
-    //public void RealityPanelActivation()
-    //{
-    //    if(!realitiesPaused)
-    //    {
-    //        realitiesPaused = true;
-    //        controlPanelDimension1.SetActive(false);
-    //        controlPanelDimension2.SetActive(false);
-    //    }
-    //    else if(realitiesPaused)
-    //    {
-    //        realitiesPaused = false;
-    //        if(currentReality == 1)
-    //        {
-    //            controlPanelDimension1.SetActive(true);
-    //        }
-    //        else if(currentReality == 2)
-    //        {
-    //            controlPanelDimension2.SetActive(true);
-    //        }
-    //    }
+    public void RealityPanelActivation()
+    {
+        if (!realitiesPaused)
+        {
+            realitiesPaused = true;
+            controlPanelDimension1.SetActive(false);
+            controlPanelDimension2.SetActive(false);
+        }
+        else if (realitiesPaused)
+        {
+            realitiesPaused = false;
+            if (currentReality == 1)
+            {
+                controlPanelDimension1.SetActive(true);
+            }
+            else if (currentReality == 2)
+            {
+                controlPanelDimension2.SetActive(true);
+            }
+        }
 
-    //}
+    }
 }
