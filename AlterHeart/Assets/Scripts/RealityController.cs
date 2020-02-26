@@ -87,7 +87,7 @@ public class RealityController : MonoBehaviour
         //Debug.Log("Swap realities coroutine started. ");
 
         playerTeleportDistance = teleportationDistance + player.transform.position;
-        collisionSphere = Instantiate(collisionSphere, playerTeleportDistance, player.transform.rotation);
+        GameObject collisionSphereClone = Instantiate(collisionSphere, playerTeleportDistance, player.transform.rotation);
         //if(canTeleport)
         //{
         //    Debug.Log("canTeleport triggered. ");
