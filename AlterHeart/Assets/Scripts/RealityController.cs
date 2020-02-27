@@ -63,12 +63,10 @@ public class RealityController : MonoBehaviour
         { 
             StartCoroutine(ChangeRealities());
         }
-        
     }
 
     private IEnumerator ChangeRealities()
     {
-        //Debug.Log("Swap realities coroutine started. ");
         if(canTeleport)
         {
             if (currentReality == 1)
@@ -120,11 +118,7 @@ public class RealityController : MonoBehaviour
 
                 }
                 Destroy(collisionSphereClone, .1f);
-
-                //playerTeleportDistance = teleportationDistance + player.transform.position;
-                //GameObject collisionSphereClone = Instantiate(collisionSphere, playerTeleportDistance, player.transform.rotation);
             }
-
 
             yield return new WaitForSeconds(.5f); //Cooldown for teleporting
             canTeleport = true;

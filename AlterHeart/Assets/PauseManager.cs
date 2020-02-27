@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
-    public GameObject realityController;
+    private RealityController realityController;
     public GameObject crosshair;
 
     public GameObject pausePanel;
@@ -17,6 +17,7 @@ public class PauseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        realityController = FindObjectOfType<RealityController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -58,7 +59,7 @@ public class PauseManager : MonoBehaviour
             Time.timeScale = 1;
         }
 
-        //realityController.GetComponent<RealityController>().RealityPanelActivation();
+        realityController.RealityPanelActivation();
     }
 
     public void RestartGame()
