@@ -33,6 +33,12 @@ public class RealityController : MonoBehaviour
 
     private CollisionSphere currentSphere;
 
+    //[0] = normal downward gravity
+    //[1] = Pull to the left
+    //[2] = Pull to the right
+    //[3] = Upside down gravity
+    public Vector3[] gravities = new Vector3[4];
+
     private bool realitiesPaused;
 
     private void Start()

@@ -19,6 +19,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private Rigidbody rb;
     public RealityController rc;
+    public Vector3 myGravity;
 
     public float moveSpeed;
     public float moveLimit = 10;
@@ -40,7 +41,9 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void Update()
     {
-        //print(Physics.gravity);
+        //Allways apply force downward when in dimension where jumping is possible
+        rb.AddForce(myGravity);
+
         if ((gameObject.transform.position.y <= -1.5f) && !secondPhase)
         {
             SceneManager.LoadScene("ProbuilderTest");
