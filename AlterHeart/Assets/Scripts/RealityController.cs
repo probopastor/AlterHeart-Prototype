@@ -65,6 +65,11 @@ public class RealityController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine changes reality player is in based on the mirrored 
+    /// current player position.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator ChangeRealities()
     {
         if(canTeleport)
@@ -124,84 +129,11 @@ public class RealityController : MonoBehaviour
             canTeleport = true;
         }
     }
-        
 
-
-    //Decides which TeleportPoint in the current dimension is closest
-    //private Vector3 ClosestPoint()
-    //{
-    //    Vector3 result = Vector3.zero;
-
-    //    if(currentReality == 1)
-    //    {
-    //        float lowestDist = 1000000;
-    //        directionalLight.color = dimensionLightColor[0];
-
-    //        for (int i = 0; i < DimensionOnePoints.Length; i++)
-    //        {
-    //            float thisDist = DimensionOnePoints[i].GetComponent<TeleportPoints>().CompareDistance(player.transform.position);
-
-    //            if (thisDist < lowestDist)
-    //            {
-    //                lowestDist = thisDist;
-    //                result = DimensionOnePoints[i].GetComponent<TeleportPoints>().partner.transform.position;
-    //            }
-    //        }
-    //    }
-    //    else if(currentReality == 2)
-    //    {
-    //        float lowestDist = 1000000;
-    //        directionalLight.color = dimensionLightColor[1];
-
-    //        for (int i = 0; i < DimensionTwoPoints.Length; i++)
-    //        {
-    //            float thisDist = DimensionTwoPoints[i].GetComponent<TeleportPoints>().CompareDistance(player.transform.position);
-
-    //            if (thisDist < lowestDist)
-    //            {
-    //                lowestDist = thisDist;
-
-    //                result = DimensionTwoPoints[i].GetComponent<TeleportPoints>().partner.transform.position;
-    //            }
-    //        }
-    //    }
-
-    //    return result;
-    //}
-
-    //Switches reality by teleporting 
-    //private IEnumerator SwitchReality()
-    //{
-    //    if(canSwap)
-    //    {
-    //        canSwap = false;
-    //        Vector3 newPos = player.transform.position;
-
-    //        newPos = ClosestPoint();
-    //        player.transform.position = newPos;
-
-    //        if (currentReality == 1)
-    //        {
-    //            currentReality = 2;
-    //            player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
-
-    //            controlPanelDimension1.SetActive(false);
-    //            controlPanelDimension2.SetActive(true);
-    //        }
-    //        else if (currentReality == 2)
-    //        {
-    //            currentReality = 1;
-    //            player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
-
-
-    //            controlPanelDimension1.SetActive(true);
-    //            controlPanelDimension2.SetActive(false);
-    //        }
-    //        yield return new WaitForSeconds(.5f); //cooldown for swapping realities
-    //        canSwap = true;
-    //    }
-    //}
-
+    /// <summary>
+    /// When game is paused, hide the UI panel. Upon game unpause, reenable correct UI
+    /// panel based on dimension player is in.
+    /// </summary>
     public void RealityPanelActivation()
     {
         if (!realitiesPaused)
