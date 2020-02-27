@@ -15,17 +15,15 @@ public class RealityController : MonoBehaviour
 {
     public static bool canTeleport;
     public GameObject collisionSphere;
-    public Vector3 teleportationDistance = new Vector3(0, 0, 0);
-    private Vector3 playerTeleportDistance;
+    private Vector3 teleportationDistance ;
 
     public GameObject controlPanelDimension1;
     public GameObject controlPanelDimension2;
+    public Transform teleportRealityOne;
+    public Transform teleportRealityTwo;
 
     public Light directionalLight;
     public Color[] dimensionLightColor;
-
-    public Transform teleportRealityOne;
-    public Transform teleportRealityTwo;
 
     public GameObject player;
 
@@ -33,99 +31,100 @@ public class RealityController : MonoBehaviour
     private GameObject[] DimensionOnePoints;
     private GameObject[] DimensionTwoPoints;
 
-    public ParticleSystem teleportParticles;
-
     private CollisionSphere currentSphere;
 
     private bool realitiesPaused;
 
     private void Start()
     {
-        canTeleport = false;
+        teleportationDistance = teleportRealityTwo.position - teleportRealityOne.position;
 
+        //Set initial variables
+        canTeleport = true;
         currentReality = 1;
+        directionalLight.color = dimensionLightColor[0];
+
 
         realitiesPaused = false;
 
         controlPanelDimension1.SetActive(true);
         controlPanelDimension2.SetActive(false);
-        ////myLighting.color = r1Light;
-        //DimensionOnePoints = GameObject.FindGameObjectsWithTag("DimensionOnePoints");
-        //DimensionTwoPoints = GameObject.FindGameObjectsWithTag("DimensionTwoPoints");
-
-        //teleportParticles.Stop();
     }
-
-    //IEnumerator ActivateParticles()
-    //{
-    //    teleportParticles.Play();
-    //    yield return new WaitForSeconds(1f);
-    //    teleportParticles.Stop();
-    //}
 
     void Update()
     {
-        //if (Input.GetButtonDown("Swap Realities"))
-        //{
-        //    Debug.Log("Swap realities button pressed. ");
-        //    //StartCoroutine(SwitchReality());
-        //    StartCoroutine(ChangeRealities());
-        //}
-        //if (Input.GetKeyDown(KeyCode.F))
-        //{
-        //    //StartCoroutine(Flash());
-        //}
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            //Debug.Log("Swap realities button pressed. ");
+        if (Input.GetButtonDown("Swap Realities"))
+        { 
             StartCoroutine(ChangeRealities());
         }
+        
     }
 
     private IEnumerator ChangeRealities()
     {
         //Debug.Log("Swap realities coroutine started. ");
-
-        if (currentReality == 1)
+        if(canTeleport)
         {
-            //playerTeleportDistance = teleportationDistance - player.transform.position;
-            //GameObject collisionSphereClone = Instantiate(collisionSphere, new Vector3(-playerTeleportDistance.x, playerTeleportDistance.y, -playerTeleportDistance.z), player.transform.rotation);
-
-            GameObject collisionSphereClone = Instantiate(collisionSphere, new Vector3(119.9f, 1.75f, 282.8f), player.transform.rotation);
-            currentSphere = FindObjectOfType<CollisionSphere>();
-
-            if (canTeleport)
+            if (currentReality == 1)
             {
-                currentReality = 2;
-                player.transform.position = currentSphere.transform.position;
-                controlPanelDimension1.SetActive(false);
-                controlPanelDimension2.SetActive(true);
-            }
-            Destroy(collisionSphereClone, 1);
-        }
-        else if (currentReality == 2)
-        {
-            GameObject collisionSphereClone = Instantiate(collisionSphere, new Vector3(119.9f, 1.75f, 190.73f), player.transform.rotation);
-            currentSphere = FindObjectOfType<CollisionSphere>();
+                Vector3 newPos = player.transform.position + teleportationDistance;
+                newPos.y += 1;
 
-            if (canTeleport)
+                //Generates a sphere to collide to see if there's anything at the teleportation location
+                GameObject collisionSphereClone = Instantiate(collisionSphere, newPos, player.transform.rotation);
+                bool intersectingSphere = collisionSphereClone.GetComponent<CollisionSphere>().intersecting;
+
+                //If it hit nothing, go ahead and teleport
+                if (!intersectingSphere)
+                {
+                    currentReality = 2;
+                    player.transform.position = collisionSphereClone.transform.position; //teleports player
+
+                    //sets variables that differentiate each dimension
+                    directionalLight.color = dimensionLightColor[1];
+
+                    controlPanelDimension1.SetActive(false);
+                    controlPanelDimension2.SetActive(true);
+                    player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
+
+                }
+
+                Destroy(collisionSphereClone, .1f);
+            }
+            //Reversed copy of the code above
+            else if (currentReality == 2)
             {
-                currentReality = 1;
+                Vector3 newPos = player.transform.position - teleportationDistance;
+                newPos.y += 1;
 
-                player.transform.position = currentSphere.transform.position;
-                controlPanelDimension1.SetActive(true);
-                controlPanelDimension2.SetActive(false);
+                GameObject collisionSphereClone = Instantiate(collisionSphere, newPos, player.transform.rotation);
+                bool intersectingSphere = collisionSphereClone.GetComponent<CollisionSphere>().intersecting;
+
+                if (!intersectingSphere)
+                {
+                    currentReality = 1;
+
+                    player.transform.position = collisionSphereClone.transform.position;
+                    directionalLight.color = dimensionLightColor[0];
+
+                    controlPanelDimension1.SetActive(true);
+                    controlPanelDimension2.SetActive(false);
+
+                    player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
+
+                }
+                Destroy(collisionSphereClone, .1f);
+
+                //playerTeleportDistance = teleportationDistance + player.transform.position;
+                //GameObject collisionSphereClone = Instantiate(collisionSphere, playerTeleportDistance, player.transform.rotation);
             }
-            Destroy(collisionSphereClone, 1);
 
-            //playerTeleportDistance = teleportationDistance + player.transform.position;
-            //GameObject collisionSphereClone = Instantiate(collisionSphere, playerTeleportDistance, player.transform.rotation);
+
+            yield return new WaitForSeconds(.5f); //Cooldown for teleporting
+            canTeleport = true;
         }
-
-
-        yield return new WaitForSeconds(0.1f);
     }
+        
 
 
     //Decides which TeleportPoint in the current dimension is closest

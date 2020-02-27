@@ -8,6 +8,7 @@ TagManager:
   - DimensionTwoPoints
   - Button
   - Obstacle
+  - Ground
   layers:
   - Default
   - TransparentFX
