@@ -32,6 +32,8 @@ public class PlayerBehaviour : MonoBehaviour
     public bool secondPhase;
     public GameObject secondPhaseStart;
 
+    public RealityController realityController;
+
     //Wall walking related
     [HideInInspector] public bool wallWalker = false;
     private readonly float lerpSpeed = 10; // smoothing speed when switching to walls
@@ -44,21 +46,31 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector3 surfaceNormal; // current surface normal
     private Vector3 myNormal; // character normal
 
+    private Vector3 startNormal;
+    private Vector3 startForward;
+
     private bool jumpingToWall = false; 
 
     private BoxCollider boxCollider; // drag BoxCollider ref in editor
 
     private bool onWall = false;
 
+    private bool dimensionSwitchedBack;
+
     private void Start()
     {
+        realityController = FindObjectOfType<RealityController>();
         rb = GetComponent<Rigidbody>();
         secondPhase = false;
         jumpForce = jumpForceDimension2;
 
         boxCollider = GetComponent<BoxCollider>();
         myNormal = transform.up;
+        startNormal = myNormal;
+        startForward = Vector3.forward;
         distGround = boxCollider.size.y - boxCollider.center.y; // distance from transform.position to ground
+
+        dimensionSwitchedBack = false;
     }
 
     private void FixedUpdate()
@@ -71,8 +83,12 @@ public class PlayerBehaviour : MonoBehaviour
     private void Update()
     {
         onWall = myNormal != Vector3.up;
-        
-       
+
+        if (realityController.currentReality == 1)
+        {
+            dimensionSwitchedBack = false;
+        }
+
         if ((gameObject.transform.position.y <= -1.5f) && !secondPhase)
         {
             SceneManager.LoadScene("ProbuilderTest");
@@ -102,6 +118,18 @@ public class PlayerBehaviour : MonoBehaviour
     
     private void NormMovement()
     {
+        if(!dimensionSwitchedBack)
+        {
+            //Quaternion targetRot = Quaternion.LookRotation(startForward, startNormal);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
+
+            //Quaternion playerRot = Quaternion.LookRotation(new Vector3(0, 0, 0), startNormal);
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            myNormal = startNormal;
+            dimensionSwitchedBack = true;
+        }
+        
+
         input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         input = Vector2.ClampMagnitude(input, 1);
 
