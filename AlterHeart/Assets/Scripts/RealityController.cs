@@ -15,36 +15,38 @@ public class RealityController : MonoBehaviour
 {
     public static bool canTeleport;
     public GameObject collisionSphere;
-    private Vector3 teleportationDistance ;
-
+    
     public GameObject controlPanelDimension1;
     public GameObject controlPanelDimension2;
+
     public Transform teleportRealityOne;
     public Transform teleportRealityTwo;
+    private Vector3 teleportationDistance;
+
+    private GameObject[] DimensionOnePoints;
+    private GameObject[] DimensionTwoPoints;
+    public GameObject teleportPointPrefab;
 
     public Light[] directionalLights;
     public Color[] dimensionLightColor;
 
     public GameObject player;
 
-    private int currentReality = 1;
-    //private GameObject[] DimensionOnePoints;
-    //private GameObject[] DimensionTwoPoints;
-
+    public int currentReality = 1;
     private bool realitiesPaused;
 
     private void Start()
     {
         teleportationDistance = teleportRealityTwo.position - teleportRealityOne.position;
 
-        //Set initial variables
+        //Set initial variables for reality two
         canTeleport = true;
         currentReality = 2;
+
         foreach(Light item in directionalLights)
         {
             item.color = dimensionLightColor[1];
         }
-
 
         realitiesPaused = false;
 
@@ -135,6 +137,74 @@ public class RealityController : MonoBehaviour
             yield return new WaitForSeconds(.5f); //Cooldown for teleporting
             canTeleport = true;
         }
+    }
+
+    /// <summary>
+    /// Creates partners for teleport points and puts them in the right position in 
+    /// </summary>
+    private void GeneratePartnerPoints()
+    {
+        for(int i = 0; i < DimensionOnePoints.Length; i++)
+        {
+            GameObject thisPoint = DimensionOnePoints[i]; //Stores the current point being checked
+
+            if (thisPoint.GetComponent<TeleportPoints>().partner == null) //Only create a new point if there is not already one assigned
+            {
+                Vector3 oppositePos = thisPoint.transform.position + teleportationDistance; //The matching position in the new dimension
+                GameObject newPoint = Instantiate(teleportPointPrefab, oppositePos, Quaternion.identity); //new point at that destination
+
+                //Assign these to each other
+                thisPoint.GetComponent<TeleportPoints>().partner = newPoint;
+
+            }
+            
+            
+
+            
+        }
+    }
+
+    private Vector3 ClosestPoint()
+    {
+        Vector3 result = Vector3.zero;
+
+        if (currentReality == 1)
+        {
+            float lowestDist = 1000000;
+
+            for (int i = 0; i < DimensionOnePoints.Length; i++)
+            {
+                float thisDist = DimensionOnePoints[i].GetComponent<TeleportPoints>().CompareDistance(player.transform.position);
+                //Debug.Log("thisDist A: " + thisDist);
+
+                if (thisDist < lowestDist)
+                {
+                    lowestDist = thisDist;
+                    //Debug.Log("A " + lowestDist);
+                    result = DimensionOnePoints[i].GetComponent<TeleportPoints>().partner.transform.position;
+                }
+            }
+        }
+        else if (currentReality == 2)
+        {
+            float lowestDist = 1000000;
+
+            for (int i = 0; i < DimensionTwoPoints.Length; i++)
+            {
+                float thisDist = DimensionTwoPoints[i].GetComponent<TeleportPoints>().CompareDistance(player.transform.position);
+                //Debug.Log("thisDist B: " + thisDist);
+
+                if (thisDist < lowestDist)
+                {
+                    lowestDist = thisDist;
+
+                    //Debug.Log("B " + lowestDist);
+                    result = DimensionTwoPoints[i].GetComponent<TeleportPoints>().partner.transform.position;
+                }
+            }
+        }
+
+        return result;
     }
 
     /// <summary>
