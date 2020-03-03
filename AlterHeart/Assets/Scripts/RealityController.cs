@@ -45,7 +45,7 @@ public class RealityController : MonoBehaviour
 
         foreach(Light item in directionalLights)
         {
-            item.color = dimensionLightColor[1];
+            item.color = dimensionLightColor[1]; 
         }
 
         realitiesPaused = false;
@@ -55,13 +55,22 @@ public class RealityController : MonoBehaviour
 
         controlPanelDimension1.SetActive(false);
         controlPanelDimension2.SetActive(true);
+
+        DimensionOnePoints = GameObject.FindGameObjectsWithTag("DimensionOnePoints");
+        DimensionTwoPoints = new GameObject[DimensionOnePoints.Length];
+        GeneratePartnerPoints();
     }
 
     void Update()
     {
+        //if (Input.GetButtonDown("Swap Realities"))
+        //{ 
+        //    StartCoroutine(ChangeRealities());
+        //}
+
         if (Input.GetButtonDown("Swap Realities"))
-        { 
-            StartCoroutine(ChangeRealities());
+        {
+            StartCoroutine(SwapRealities());
         }
     }
 
@@ -140,6 +149,42 @@ public class RealityController : MonoBehaviour
     }
 
     /// <summary>
+    /// Teleports player based on the position of the closest teleport point
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SwapRealities()
+    {
+        if (canTeleport) //only if it is possible to teleport
+        {
+            Vector3 newPos = player.transform.position;
+
+            newPos = ClosestPoint();
+            player.transform.position = newPos;
+
+            if (currentReality == 1)
+            {
+                currentReality = 2;
+                foreach (Light item in directionalLights)
+                {
+                    item.color = dimensionLightColor[1];
+                }
+            }
+            else if (currentReality == 2)
+            {
+                currentReality = 1;
+                foreach (Light item in directionalLights)
+                {
+                    item.color = dimensionLightColor[0];
+                }
+            }
+
+            yield return new WaitForSeconds(.5f); //Cooldown for teleporting
+            canTeleport = true;
+        }
+    }
+
+
+    /// <summary>
     /// Creates partners for teleport points and puts them in the right position in 
     /// </summary>
     private void GeneratePartnerPoints()
@@ -153,38 +198,41 @@ public class RealityController : MonoBehaviour
                 Vector3 oppositePos = thisPoint.transform.position + teleportationDistance; //The matching position in the new dimension
                 GameObject newPoint = Instantiate(teleportPointPrefab, oppositePos, Quaternion.identity); //new point at that destination
 
-                //Assign these to each other
+                //Assign these to each other as partners
                 thisPoint.GetComponent<TeleportPoints>().partner = newPoint;
+                newPoint.GetComponent<TeleportPoints>().partner = thisPoint;
 
+                //fill out the second t.point array
+                DimensionTwoPoints[i] = newPoint;
             }
-            
-            
-
-            
         }
     }
 
+    /// <summary>
+    /// Finds which teleport point is closest to the player
+    /// </summary>
+    /// <returns>The position of the closest teleport point's partner</returns>
     private Vector3 ClosestPoint()
     {
         Vector3 result = Vector3.zero;
 
-        if (currentReality == 1)
+        if (currentReality == 1) 
         {
-            float lowestDist = 1000000;
+            float lowestDist = 1000000; //set a completely unrealistic distance to start with
 
-            for (int i = 0; i < DimensionOnePoints.Length; i++)
+            for (int i = 0; i < DimensionOnePoints.Length; i++) //check each and every t.point in the array
             {
                 float thisDist = DimensionOnePoints[i].GetComponent<TeleportPoints>().CompareDistance(player.transform.position);
-                //Debug.Log("thisDist A: " + thisDist);
 
+                //Figure out which point is closest to the player
                 if (thisDist < lowestDist)
                 {
                     lowestDist = thisDist;
-                    //Debug.Log("A " + lowestDist);
                     result = DimensionOnePoints[i].GetComponent<TeleportPoints>().partner.transform.position;
                 }
             }
         }
+        //reversed copy of the above code
         else if (currentReality == 2)
         {
             float lowestDist = 1000000;
@@ -192,13 +240,11 @@ public class RealityController : MonoBehaviour
             for (int i = 0; i < DimensionTwoPoints.Length; i++)
             {
                 float thisDist = DimensionTwoPoints[i].GetComponent<TeleportPoints>().CompareDistance(player.transform.position);
-                //Debug.Log("thisDist B: " + thisDist);
 
                 if (thisDist < lowestDist)
                 {
                     lowestDist = thisDist;
 
-                    //Debug.Log("B " + lowestDist);
                     result = DimensionTwoPoints[i].GetComponent<TeleportPoints>().partner.transform.position;
                 }
             }
