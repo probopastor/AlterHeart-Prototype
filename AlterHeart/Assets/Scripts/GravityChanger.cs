@@ -36,8 +36,8 @@ public class GravityChanger : MonoBehaviour
         myNormal = transform.up; // normal starts as character up direction
         myTransform = transform;
         rb.freezeRotation = true; // disable physics rotation
-                                         // distance from transform.position to ground
-        distGround = boxCollider.extents.y - boxCollider.center.y;
+                                         
+        distGround = boxCollider.extents.y - boxCollider.center.y; // distance from transform.position to ground
 
     }
 

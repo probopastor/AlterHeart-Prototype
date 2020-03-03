@@ -22,22 +22,14 @@ public class RealityController : MonoBehaviour
     public Transform teleportRealityOne;
     public Transform teleportRealityTwo;
 
-    public Light directionalLight;
+    public Light[] directionalLights;
     public Color[] dimensionLightColor;
 
     public GameObject player;
 
     private int currentReality = 1;
-    private GameObject[] DimensionOnePoints;
-    private GameObject[] DimensionTwoPoints;
-
-    private CollisionSphere currentSphere;
-
-    //[0] = normal downward gravity
-    //[1] = Pull to the left
-    //[2] = Pull to the right
-    //[3] = Upside down gravity
-    public Vector3[] gravities = new Vector3[4];
+    //private GameObject[] DimensionOnePoints;
+    //private GameObject[] DimensionTwoPoints;
 
     private bool realitiesPaused;
 
@@ -47,14 +39,20 @@ public class RealityController : MonoBehaviour
 
         //Set initial variables
         canTeleport = true;
-        currentReality = 1;
-        directionalLight.color = dimensionLightColor[0];
+        currentReality = 2;
+        foreach(Light item in directionalLights)
+        {
+            item.color = dimensionLightColor[1];
+        }
 
 
         realitiesPaused = false;
 
-        controlPanelDimension1.SetActive(true);
-        controlPanelDimension2.SetActive(false);
+        player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
+        player.GetComponent<PlayerBehaviour>().wallWalker = false;
+
+        controlPanelDimension1.SetActive(false);
+        controlPanelDimension2.SetActive(true);
     }
 
     void Update()
@@ -69,10 +67,9 @@ public class RealityController : MonoBehaviour
     /// Coroutine changes reality player is in based on the mirrored 
     /// current player position.
     /// </summary>
-    /// <returns></returns>
     private IEnumerator ChangeRealities()
     {
-        if(canTeleport)
+        if(canTeleport) //only if it is possible to teleport
         {
             if (currentReality == 1)
             {
@@ -90,11 +87,17 @@ public class RealityController : MonoBehaviour
                     player.transform.position = collisionSphereClone.transform.position; //teleports player
 
                     //sets variables that differentiate each dimension
-                    directionalLight.color = dimensionLightColor[1];
+                    foreach (Light item in directionalLights)
+                    {
+                        item.color = dimensionLightColor[1];
+                    }
 
                     controlPanelDimension1.SetActive(false);
                     controlPanelDimension2.SetActive(true);
+                    //Player cannot jump in this dimension, but can walk on walls
                     player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
+                    player.GetComponent<PlayerBehaviour>().wallWalker = false;
+
 
                 }
 
@@ -114,13 +117,17 @@ public class RealityController : MonoBehaviour
                     currentReality = 1;
 
                     player.transform.position = collisionSphereClone.transform.position;
-                    directionalLight.color = dimensionLightColor[0];
+
+                    foreach (Light item in directionalLights)
+                    {
+                        item.color = dimensionLightColor[0];
+                    }
 
                     controlPanelDimension1.SetActive(true);
                     controlPanelDimension2.SetActive(false);
 
                     player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
-
+                    player.GetComponent<PlayerBehaviour>().wallWalker = true;
                 }
                 Destroy(collisionSphereClone, .1f);
             }
