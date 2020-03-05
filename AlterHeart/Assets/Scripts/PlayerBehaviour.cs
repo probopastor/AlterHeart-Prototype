@@ -84,7 +84,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         onWall = myNormal != Vector3.up;
 
-        if (realityController.currentReality == 1)
+        if (realityController.currentReality == 2)
         {
             dimensionSwitchedBack = false;
         }
@@ -99,11 +99,11 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
 
-        if (wallWalker) //Aka dimension 1
+        if (realityController.currentReality == 2) //Aka dimension 1
         {
             WallWalking();
         }
-        else
+        else if(realityController.currentReality == 1)
         {
             NormMovement();
 
@@ -120,6 +120,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if(!dimensionSwitchedBack)
         {
+            Debug.Log("yes");
+
             //Quaternion targetRot = Quaternion.LookRotation(startForward, startNormal);
             //transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
 
