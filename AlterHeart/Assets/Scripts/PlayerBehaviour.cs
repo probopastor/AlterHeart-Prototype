@@ -204,7 +204,14 @@ public class PlayerBehaviour : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
 
         // move the character forth/back with Vertical axis:
-        transform.Translate(0, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
+        //transform.Translate(0, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
+
+        if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
+        {
+            Vector3 targetDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+            targetDirection = Camera.main.transform.TransformDirection(targetDirection) * moveSpeed;
+            rb.AddForce(targetDirection);
+        }
     }
 
     /// <summary>
