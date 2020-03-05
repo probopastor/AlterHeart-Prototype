@@ -14,19 +14,30 @@ public class ButtonController : MonoBehaviour
     GameObject pushParticlesObj;
     public float yParticleModifier = 0f;
 
+    private Material unHighlightColor;
+    public Material highlightColor;
+
     // Start is called before the first frame update
     void Start()
     {
         isPushed = false;
         activationObject.SetActive(true);
+        unHighlightColor = GetComponent<MeshRenderer>().material;
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    public void Highlight()
     {
-        
+        print("Highlighting");
+        GetComponent<MeshRenderer>().material = highlightColor;
     }
 
+    public void UnHighlight()
+    {
+        print("Better un highlight");
+        GetComponent<MeshRenderer>().material = unHighlightColor;
+
+    }
 
     public void PushButton()
     {
