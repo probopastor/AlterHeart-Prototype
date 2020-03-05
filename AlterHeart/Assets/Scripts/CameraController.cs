@@ -25,6 +25,8 @@ public class CameraController : MonoBehaviour
     float mouseX;
     float mouseY;
 
+    ButtonController lastButton;
+
     private void Start()
     {
         crossHair.sprite = crossHairUnselected;
@@ -53,20 +55,25 @@ public class CameraController : MonoBehaviour
         RaycastHit hit;
         ///Ray ray = Camera.main.ScreenPointToRay(crossHair.transform.position);
 
+
         
-        // Does the ray intersect any objects excluding the player layer
+        // Does the ray intersect any objects excluding the player layer?
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, raycastLayer))
         {
             crossHair.sprite = crossHairSelected;
+            
+            //highlight the selected button
+            if (hit.collider.GetComponent<ButtonController>() != null)
+            {
+                lastButton = hit.collider.GetComponent<ButtonController>();
+                lastButton.Highlight();
+            }
 
             //Debug.DrawRay(ray, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.Mouse0) && lastButton != null)
             {
-                if (hit.collider.GetComponent<ButtonController>() != null)
-                {
-                    hit.collider.GetComponent<ButtonController>().PushButton();
-                }
+                lastButton.PushButton();
             }
         }
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, raycastLayerTeleporter))
@@ -96,6 +103,12 @@ public class CameraController : MonoBehaviour
         else
         {
             crossHair.sprite = crossHairUnselected;
+            print("I see nothing");
+            if (lastButton != null) //unhighlights the last button and erases its reference as soon as the player moves away
+            {
+                lastButton.UnHighlight();
+                lastButton = null;
+            }
         }
 
         /*
