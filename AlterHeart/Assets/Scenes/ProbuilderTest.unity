@@ -3423,7 +3423,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dimension 1
+  m_Text: Dimension 2
 --- !u!222 &101152677
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3713,7 +3713,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh17844
+  m_Name: pb_Mesh16558
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8736,7 +8736,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dimension 2
+  m_Text: Dimension 1
 --- !u!222 &313820817
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26315,7 +26315,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh17946
+  m_Name: pb_Mesh16620
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -29039,7 +29039,7 @@ GameObject:
   - component: {fileID: 1019652068}
   - component: {fileID: 1019652067}
   m_Layer: 5
-  m_Name: ControlPanelDimension1
+  m_Name: Wall Walking Controls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29063,7 +29063,7 @@ RectTransform:
   - {fileID: 735903768}
   - {fileID: 469796092}
   m_Father: {fileID: 1504507416}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -41223,7 +41223,7 @@ GameObject:
   - component: {fileID: 1339586199}
   - component: {fileID: 1339586198}
   m_Layer: 5
-  m_Name: ControlPanelDimension2
+  m_Name: Jumping Controls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41248,7 +41248,7 @@ RectTransform:
   - {fileID: 328095823}
   - {fileID: 717090588}
   m_Father: {fileID: 1504507416}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -43678,17 +43678,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraAngle: {fileID: 1440544649}
   cameraTransform: {fileID: 1257616067}
-  rc: {fileID: 1592342110}
-  myGravity: 0
+  realityController: {fileID: 0}
+  myGravity: 12
   moveSpeed: 28
   moveLimit: 25
   jumpForce: 0
-  fallForce: 15
-  jumpForceDimension1: 0
-  jumpForceDimension2: 1450
-  secondPhase: 0
-  secondPhaseStart: {fileID: 1159288195}
-  realityController: {fileID: 0}
+  jumpForceDimension1: 1450
+  jumpForceDimension2: 0
   wallWalker: 0
 --- !u!54 &1440544645
 Rigidbody:
@@ -43774,7 +43770,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440544643}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 119.9, y: 1.75, z: 277.8}
+  m_LocalPosition: {x: 119.9, y: 1.75, z: 186.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1257616067}
@@ -45711,8 +45707,8 @@ RectTransform:
   - {fileID: 14478417}
   - {fileID: 873034403}
   - {fileID: 187793240}
-  - {fileID: 1019652066}
   - {fileID: 1339586197}
+  - {fileID: 1019652066}
   - {fileID: 524790250}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -52323,8 +52319,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionSphere: {fileID: 2075960594286070272, guid: 95432d0a6ae6faa40b45177b19a301bc,
     type: 3}
-  controlPanelDimension1: {fileID: 1019652065}
-  controlPanelDimension2: {fileID: 1339586196}
+  controlPanelDimension1: {fileID: 1339586196}
+  controlPanelDimension2: {fileID: 1019652065}
   teleportRealityOne: {fileID: 105276237}
   teleportRealityTwo: {fileID: 2066848796}
   teleportPointPrefab: {fileID: 1092562448907802614, guid: 23c839946a8f17f45a3091b5acbd8336,

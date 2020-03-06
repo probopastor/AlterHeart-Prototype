@@ -103,7 +103,6 @@ public class CameraController : MonoBehaviour
         else
         {
             crossHair.sprite = crossHairUnselected;
-            print("I see nothing");
             if (lastButton != null) //unhighlights the last button and erases its reference as soon as the player moves away
             {
                 lastButton.UnHighlight();

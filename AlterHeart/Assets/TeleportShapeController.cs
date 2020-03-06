@@ -10,7 +10,7 @@ public class TeleportShapeController : MonoBehaviour
 
     public void TeleportPlayerToPoint()
     {
-        player.transform.position = pointToTeleport.transform.position;
-        player.GetComponent<PlayerBehaviour>().secondPhase = true;
+        //player.transform.position = pointToTeleport.transform.position;
+        //player.GetComponent<PlayerBehaviour>().secondPhase = true;
     }
 }
