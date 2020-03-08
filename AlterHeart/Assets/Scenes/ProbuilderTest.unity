@@ -1190,7 +1190,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.8627451, g: 0.7137255, b: 0.76862746, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -24853,7 +24853,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh17726
+  m_Name: pb_Mesh16490
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -26166,7 +26166,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.8627451, g: 0.7137255, b: 0.76862746, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -35660,7 +35660,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.8627451, g: 0.7137255, b: 0.76862746, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -43686,6 +43686,7 @@ MonoBehaviour:
   jumpForceDimension1: 1450
   jumpForceDimension2: 0
   wallWalker: 0
+  canMove: 0
 --- !u!54 &1440544645
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -43789,7 +43790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d1c07d9fd37184199da625c220a7d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider: {fileID: 1440544646}
 --- !u!1 &1444525558
 GameObject:
   m_ObjectHideFlags: 0
@@ -80333,7 +80333,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.8627451, g: 0.7137255, b: 0.76862746, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
