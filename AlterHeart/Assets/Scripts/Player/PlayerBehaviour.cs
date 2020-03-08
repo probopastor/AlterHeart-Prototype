@@ -65,6 +65,7 @@ public class PlayerBehaviour : MonoBehaviour
         distGround = boxCollider.size.y - boxCollider.center.y; // distance from transform.position to ground
 
         dimensionSwitchedBack = false;
+        canMove = true;
     }
 
     private void FixedUpdate()
