@@ -50,7 +50,6 @@ public class PlayerBehaviour : MonoBehaviour
     private bool onWall = false;
 
     private bool dimensionSwitchedBack;
-    public bool canMove;
 
     private void Start()
     {
@@ -65,6 +64,7 @@ public class PlayerBehaviour : MonoBehaviour
         distGround = boxCollider.size.y - boxCollider.center.y; // distance from transform.position to ground
 
         dimensionSwitchedBack = false;
+
     }
 
     private void FixedUpdate()
@@ -83,20 +83,17 @@ public class PlayerBehaviour : MonoBehaviour
             dimensionSwitchedBack = true;
         }
 
-        if(canMove) //For cutscenes
+        //Which controls are available in which dimension
+        if (realityController.currentReality == 2)
         {
-            //Which controls are available in which dimension
-            if (realityController.currentReality == 2)
+            WallWalking();
+        }
+        else if (realityController.currentReality == 1)
+        {
+            NormMovement();
+            if (Input.GetButtonDown("Jump"))
             {
-                WallWalking();
-            }
-            else if (realityController.currentReality == 1)
-            {
-                NormMovement();
-                if (Input.GetButtonDown("Jump"))
-                {
-                    Jump();
-                }
+                Jump();
             }
         }
         
