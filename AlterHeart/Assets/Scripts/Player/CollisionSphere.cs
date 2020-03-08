@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*****************************************************************************
+// File Name: CollisionSphere.cs
+// Author: Scott, Billy
+// Creation Date: 
+//
+// Brief Description: DEPRECIATED Spawned to determine if the matching position in another dimension
+is occupied by another object
+*****************************************************************************/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
