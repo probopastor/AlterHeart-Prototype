@@ -18,15 +18,21 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector2 input;
 
     private Rigidbody rb;
-    public RealityController realityController;
+    public RealityController rc;
+    public float myGravity;
 
-    public float myGravity; //the force of gravity exerted on the player
     public float moveSpeed;
     public float moveLimit = 10;
-    [HideInInspector]public float jumpForce; 
+    public float jumpForce;
+    public float fallForce = 2;
 
-    public float jumpForceDimension1 = 1f;
-    public float jumpForceDimension2 = 0f;
+    public float jumpForceDimension1 = 0f;
+    public float jumpForceDimension2 = 1f;
+
+    public bool secondPhase;
+    public GameObject secondPhaseStart;
+
+    public RealityController realityController;
 
     //Wall walking related
     [HideInInspector] public bool wallWalker = false;
@@ -34,7 +40,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool isGrounded; //whether or not the character is on the ground
     private float deltaGround = 0.2f; // character is grounded up to this distance
-    private float jumpRange = 5; // range to detect target wall
+    private float jumpRange = 10; // range to detect target wall
     private float distGround; // distance from character position to ground
 
     private Vector3 surfaceNormal; // current surface normal
@@ -55,7 +61,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         realityController = FindObjectOfType<RealityController>();
         rb = GetComponent<Rigidbody>();
-        jumpForce = jumpForceDimension1;
+        secondPhase = false;
+        jumpForce = jumpForceDimension2;
 
         boxCollider = GetComponent<BoxCollider>();
         myNormal = transform.up;
@@ -77,19 +84,29 @@ public class PlayerBehaviour : MonoBehaviour
     {
         onWall = myNormal != Vector3.up;
 
-        if (realityController.currentReality == 1)
+        if (realityController.currentReality == 2)
         {
-            dimensionSwitchedBack = true;
+            dimensionSwitchedBack = false;
         }
 
-        //Which controls are available in which dimension
-        if (realityController.currentReality == 2)
+        if ((gameObject.transform.position.y <= -1.5f) && !secondPhase)
+        {
+            SceneManager.LoadScene("ProbuilderTest");
+        }
+        else if ((gameObject.transform.position.y <= -1.5f) && secondPhase)
+        {
+            gameObject.transform.position = secondPhaseStart.transform.position;
+        }
+
+
+        if (realityController.currentReality == 2) //Aka dimension 1
         {
             WallWalking();
         }
         else if(realityController.currentReality == 1)
         {
             NormMovement();
+
             if (Input.GetButtonDown("Jump"))
             {
                 Jump();
@@ -103,6 +120,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if(!dimensionSwitchedBack)
         {
+            Debug.Log("yes");
 
             //Quaternion targetRot = Quaternion.LookRotation(startForward, startNormal);
             //transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
@@ -135,7 +153,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         if(!OnGround())
         {
-            rb.AddForce(0, -myGravity, 0);
+            rb.AddForce(0, -fallForce, 0);
         }
     }
 
@@ -270,7 +288,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (OnGround())
         {
-            rb.AddForce(myNormal * jumpForce);
+            rb.AddForce(Vector3.up * jumpForce);
         }
     }
 
@@ -281,7 +299,7 @@ public class PlayerBehaviour : MonoBehaviour
     private bool OnGround()
     {
         bool result = false;
-        if (Physics.Raycast(transform.position, -myNormal, out RaycastHit Hit, 1f))
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit Hit, 1f))
         {
             if (Hit.transform.gameObject != null)
             {

@@ -3,8 +3,7 @@
 // Author:
 // Creation Date: 2/6/2020
 //
-// Brief Description: Allows transportation between dimensions, which in this
-// case means teleporting between the two "islands". 
+// Brief Description:
 *****************************************************************************/
 
 using System.Collections;
@@ -40,9 +39,9 @@ public class RealityController : MonoBehaviour
     {
         teleportationDistance = teleportRealityTwo.position - teleportRealityOne.position;
 
-        //Set initial variables for reality one - Jumping
+        //Set initial variables for reality two
         canTeleport = true;
-        currentReality = 1;
+        currentReality = 2;
 
         foreach(Light item in directionalLights)
         {
@@ -51,10 +50,11 @@ public class RealityController : MonoBehaviour
 
         realitiesPaused = false;
 
-        player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
+        player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
+        player.GetComponent<PlayerBehaviour>().wallWalker = false;
 
-        controlPanelDimension1.SetActive(true);
-        controlPanelDimension2.SetActive(false);
+        controlPanelDimension1.SetActive(false);
+        controlPanelDimension2.SetActive(true);
 
         DimensionOnePoints = GameObject.FindGameObjectsWithTag("DimensionOnePoints");
         DimensionTwoPoints = new GameObject[DimensionOnePoints.Length];
@@ -82,7 +82,7 @@ public class RealityController : MonoBehaviour
     {
         if(canTeleport) //only if it is possible to teleport
         {
-            if (currentReality == 1) //switch to wall-walking dimension 2
+            if (currentReality == 1)
             {
                 Vector3 newPos = player.transform.position + teleportationDistance;
                 newPos.y += 1;
@@ -164,10 +164,6 @@ public class RealityController : MonoBehaviour
             if (currentReality == 1)
             {
                 currentReality = 2;
-                controlPanelDimension1.SetActive(false);
-                controlPanelDimension2.SetActive(true);
-                player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
-
                 foreach (Light item in directionalLights)
                 {
                     item.color = dimensionLightColor[1];
@@ -175,12 +171,7 @@ public class RealityController : MonoBehaviour
             }
             else if (currentReality == 2)
             {
-
                 currentReality = 1;
-                controlPanelDimension1.SetActive(true);
-                controlPanelDimension2.SetActive(false);
-                player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
-
                 foreach (Light item in directionalLights)
                 {
                     item.color = dimensionLightColor[0];
