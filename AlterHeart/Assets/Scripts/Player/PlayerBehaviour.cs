@@ -154,18 +154,17 @@ public class PlayerBehaviour : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             ray = new Ray(transform.position, transform.forward);
-
-            //Check if there's a wall ahead
             if (Physics.Raycast(ray, out hit, jumpRange))
-            { 
-                if(hit.collider.gameObject.tag != "Obstacle") //Prevents jumping to certain objects
-                    JumpToWall(hit.point, hit.normal); // yes: jump to the wall
+            { // wall ahead?
+                JumpToWall(hit.point, hit.normal); // yes: jump to the wall
             }
             else if (isGrounded)
             { // no: if grounded, jump up
                 rb.velocity += jumpForce * myNormal;
             }
         }
+
+        // movement code - turn left/right with Horizontal axis:
 
         // update surface normal and isGrounded:
         ray = new Ray(transform.position, -myNormal); // cast ray downwards
@@ -190,6 +189,9 @@ public class PlayerBehaviour : MonoBehaviour
         // align character to the new myNormal while keeping the forward direction:
         Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
+
+        // move the character forth/back with Vertical axis:
+        //transform.Translate(0, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
 
         if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
         {
