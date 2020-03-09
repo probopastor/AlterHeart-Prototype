@@ -24,7 +24,6 @@ public class PlayerBehaviour : MonoBehaviour
     public float moveSpeed;
     public float moveLimit = 10;
     public float jumpForce;
-    public float fallForce = 2;
 
     public float jumpForceDimension1 = 0f;
     public float jumpForceDimension2 = 1f;
@@ -73,37 +72,16 @@ public class PlayerBehaviour : MonoBehaviour
         dimensionSwitchedBack = false;
     }
 
-    private void FixedUpdate()
-    {
-        //Always apply downward force depending on which way is "up"
-        rb.AddForce(-myGravity * myNormal);
-
-    }
-
     private void Update()
     {
         onWall = myNormal != Vector3.up;
 
-        if (realityController.currentReality == 2)
+        if (realityController.currentReality == 1) //Wall walking activated
         {
             dimensionSwitchedBack = false;
-        }
-
-        if ((gameObject.transform.position.y <= -1.5f) && !secondPhase)
-        {
-            SceneManager.LoadScene("ProbuilderTest");
-        }
-        else if ((gameObject.transform.position.y <= -1.5f) && secondPhase)
-        {
-            gameObject.transform.position = secondPhaseStart.transform.position;
-        }
-
-
-        if (realityController.currentReality == 2) //Aka dimension 1
-        {
             WallWalking();
         }
-        else if(realityController.currentReality == 1)
+        else if(realityController.currentReality == 2)
         {
             NormMovement();
 
@@ -115,9 +93,14 @@ public class PlayerBehaviour : MonoBehaviour
         
     }
 
-    
+    private void LateUpdate()
+    {
+        rb.AddForce(-myGravity * myNormal);
+    }
+
     private void NormMovement()
     {
+        //Switches back to normal movement if back to jumping dimension
         if(!dimensionSwitchedBack)
         {
             Debug.Log("yes");
@@ -126,6 +109,7 @@ public class PlayerBehaviour : MonoBehaviour
             //transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
 
             //Quaternion playerRot = Quaternion.LookRotation(new Vector3(0, 0, 0), startNormal);
+
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             myNormal = startNormal;
             dimensionSwitchedBack = true;
@@ -153,7 +137,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         if(!OnGround())
         {
-            rb.AddForce(0, -fallForce, 0);
+            rb.AddForce(-myGravity * myNormal);
         }
     }
 
@@ -164,16 +148,13 @@ public class PlayerBehaviour : MonoBehaviour
         Ray ray;
         RaycastHit hit;
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump")) //Just move to the wall
         {
             ray = new Ray(transform.position, transform.forward);
+
             if (Physics.Raycast(ray, out hit, jumpRange))
             { // wall ahead?
                 JumpToWall(hit.point, hit.normal); // yes: jump to the wall
-            }
-            else if (isGrounded)
-            { // no: if grounded, jump up
-                rb.velocity += jumpForce * myNormal;
             }
         }
 
@@ -182,9 +163,8 @@ public class PlayerBehaviour : MonoBehaviour
         // update surface normal and isGrounded:
         ray = new Ray(transform.position, -myNormal); // cast ray downwards
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit)) //if the ray hits something below player
         {
-            // use it to update myNormal and isGrounded
             isGrounded = hit.distance <= distGround + deltaGround;
             surfaceNormal = hit.normal;
         }
@@ -203,15 +183,24 @@ public class PlayerBehaviour : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
 
-        // move the character forth/back with Vertical axis:
-        //transform.Translate(0, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
-
-        if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
+        if (isGrounded)
         {
-            Vector3 targetDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-            targetDirection = Camera.main.transform.TransformDirection(targetDirection) * moveSpeed;
-            rb.AddForce(targetDirection);
+            input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            input = Vector2.ClampMagnitude(input, 1);
+
+            if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
+            {
+                Vector3 targetDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+                targetDirection = Camera.main.transform.TransformDirection(targetDirection) * moveSpeed;
+
+                rb.AddForce(targetDirection);
+            }
         }
+        else
+        {
+            rb.AddForce(-myGravity * myNormal * 10);
+        }
+        
     }
 
     /// <summary>
@@ -276,18 +265,17 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    private void GravityChange()
-    {
-
-    }
 
     /// <summary>
     /// Applies upward force if on the ground
     /// </summary>
     public void Jump()
     {
+        Debug.Log("pressed jump and on ground");
+
         if (OnGround())
         {
+            Debug.Log("pressed jump and on ground");
             rb.AddForce(Vector3.up * jumpForce);
         }
     }
@@ -304,9 +292,10 @@ public class PlayerBehaviour : MonoBehaviour
             if (Hit.transform.gameObject != null)
             {
                 result = true;
+                print("OnGround() says: On the ground");
             }
         }
-
+        
         return result;
     }
 }
