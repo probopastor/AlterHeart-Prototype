@@ -43680,8 +43680,8 @@ MonoBehaviour:
   cameraTransform: {fileID: 1257616067}
   rc: {fileID: 1592342110}
   myGravity: 12
-  moveSpeed: 28
-  moveLimit: 25
+  moveSpeed: 50
+  moveLimit: 75
   jumpForce: 0
   jumpForceDimension1: 0
   jumpForceDimension2: 1450
