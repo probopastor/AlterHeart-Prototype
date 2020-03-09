@@ -9,6 +9,12 @@ TagManager:
   - Button
   - Obstacle
   - Ground
+  - TopWall
+  - BottomWall
+  - RightWall
+  - LeftWall
+  - Ceiling
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -21,7 +27,7 @@ TagManager:
   - Button
   - TeleportationIcosphere
   - WinLayer
-  - 
+  - Ground
   - 
   - 
   - 

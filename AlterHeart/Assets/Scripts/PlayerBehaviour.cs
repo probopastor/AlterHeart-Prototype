@@ -15,6 +15,8 @@ public class PlayerBehaviour : MonoBehaviour
     public Transform cameraAngle;
     public Transform cameraTransform;
 
+    public LayerMask platformCheck;
+
     private Vector2 input;
 
     private Rigidbody rb;
@@ -57,6 +59,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool dimensionSwitchedBack;
 
+    bool isCeiling = false;
+    bool isRightWall = false;
+    bool isTopWall = false;
+
     private void Start()
     {
         realityController = FindObjectOfType<RealityController>();
@@ -71,6 +77,10 @@ public class PlayerBehaviour : MonoBehaviour
         distGround = boxCollider.size.y - boxCollider.center.y; // distance from transform.position to ground
 
         dimensionSwitchedBack = false;
+
+        bool isCeiling = false;
+        bool isRightWall = false;
+        bool isTopWall = false;
     }
 
     private void FixedUpdate()
@@ -110,6 +120,34 @@ public class PlayerBehaviour : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 Jump();
+            }
+        }
+
+        RaycastHit platformHit;
+        if(Physics.Raycast(transform.position, -myNormal, out platformHit, 2f, platformCheck))
+        {
+            if(platformHit.collider.tag == "Floor" || platformHit.collider.tag == "Ceiling" || platformHit.collider.tag == "Ground")
+            {
+                Debug.Log("Ceiling True");
+                isCeiling = true;
+                isRightWall = false;
+                isTopWall = false;
+            }
+            else if(platformHit.collider.tag == "TopWall" || platformHit.collider.tag == "BottomWall")
+            {
+                Debug.Log("Top True");
+
+                isCeiling = false;
+                isRightWall = false;
+                isTopWall = true;
+            }
+            else if (platformHit.collider.tag == "LeftWall" || platformHit.collider.tag == "RightWall")
+            {
+                Debug.Log("Right True");
+
+                isCeiling = false;
+                isRightWall = true;
+                isTopWall = false;
             }
         }
         
@@ -210,6 +248,28 @@ public class PlayerBehaviour : MonoBehaviour
         {
             Vector3 targetDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
             targetDirection = Camera.main.transform.TransformDirection(targetDirection) * moveSpeed;
+
+            Vector3 instanceTargetDirection = targetDirection;
+
+            if(isCeiling)
+            {
+                targetDirection.x = instanceTargetDirection.x;
+                targetDirection.z = instanceTargetDirection.z;
+                targetDirection.y = 0.0f;
+            }
+            else if(isTopWall)
+            {
+                targetDirection.x = instanceTargetDirection.x;
+                targetDirection.y = instanceTargetDirection.y;
+                targetDirection.z = 0.0f;
+            }
+            else if(isRightWall)
+            {
+                targetDirection.x = instanceTargetDirection.x;
+                targetDirection.y = instanceTargetDirection.y;
+                targetDirection.x = 0.0f;
+            }
+
             rb.AddForce(targetDirection);
         }
     }
