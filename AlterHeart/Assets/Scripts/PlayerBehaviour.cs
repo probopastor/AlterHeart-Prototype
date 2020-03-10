@@ -3,7 +3,10 @@
 // Author:
 // Creation Date: 2/6/2020
 //
-// Brief Description: Allows player movement
+// Brief Description: Allows player movement via addForce(). When in dimension 1, the player can walk on walls. In dimension 2,
+the player is able to jump. 
+//Known Glitch 1: Movement for the wall-walking forces player to move forward in all axes, not just z and x. 
+We are not currently able to stop the player from lifting off the "ground" when in that dimension.
 *****************************************************************************/
 
 using UnityEngine;
@@ -135,6 +138,7 @@ public class PlayerBehaviour : MonoBehaviour
             rb.AddForce(targetDirection);
         }
 
+        //when not on the ground, pull the player downward
         if(!OnGround())
         {
             rb.AddForce(-myGravity * myNormal);
@@ -157,8 +161,6 @@ public class PlayerBehaviour : MonoBehaviour
                 JumpToWall(hit.point, hit.normal); // yes: jump to the wall
             }
         }
-
-        // movement code - turn left/right with Horizontal axis:
 
         // update surface normal and isGrounded:
         ray = new Ray(transform.position, -myNormal); // cast ray downwards
@@ -190,17 +192,15 @@ public class PlayerBehaviour : MonoBehaviour
 
             if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
             {
-                Vector3 targetDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-                targetDirection = Camera.main.transform.TransformDirection(targetDirection) * moveSpeed;
-
+                Vector3 targetDirection = Camera.main.transform.TransformDirection(new Vector3(input.x, 0, input.y) * moveSpeed);
                 rb.AddForce(targetDirection);
             }
         }
         else
         {
-            rb.AddForce(-myGravity * myNormal * 10);
+            rb.AddForce(-myGravity * myNormal * 10); //pins character to ground whenever they manage to fly upward
         }
-        
+
     }
 
     /// <summary>
@@ -221,7 +221,7 @@ public class PlayerBehaviour : MonoBehaviour
         Vector3 myForward = Vector3.Cross(transform.right, normal);
         Quaternion newRot = Quaternion.LookRotation(myForward, normal);
 
-        StartCoroutine(jumpTime(origPos, origRot, newPos, newRot, normal));
+        StartCoroutine(JumpTime(origPos, origRot, newPos, newRot, normal));
     }
 
     /// <summary>
@@ -233,7 +233,7 @@ public class PlayerBehaviour : MonoBehaviour
     /// <param name="newRot">The player's new rotation</param>
     /// <param name="normal">Which direction is "up" for the player</param>
     /// <returns></returns>
-    private IEnumerator jumpTime(Vector3 origPos, Quaternion origRot, Vector3 newPos, Quaternion newRot, Vector3 normal)
+    private IEnumerator JumpTime(Vector3 origPos, Quaternion origRot, Vector3 newPos, Quaternion newRot, Vector3 normal)
     {
         for (float t = 0.0f; t < 1.0f;)
         {
@@ -271,17 +271,14 @@ public class PlayerBehaviour : MonoBehaviour
     /// </summary>
     public void Jump()
     {
-        Debug.Log("pressed jump and on ground");
-
         if (OnGround())
         {
-            Debug.Log("pressed jump and on ground");
             rb.AddForce(Vector3.up * jumpForce);
         }
     }
 
     /// <summary>
-    /// Whether or not the player is currently on the ground
+    /// Whether or not the player is currently on the ground. Only use for jumping dimension code
     /// </summary>
     /// <returns></returns>
     private bool OnGround()

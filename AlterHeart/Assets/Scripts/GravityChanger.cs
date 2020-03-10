@@ -90,7 +90,8 @@ public class GravityChanger : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal);
         myTransform.rotation = Quaternion.Lerp(myTransform.rotation, targetRot, lerpSpeed * Time.deltaTime);
         // move the character forth/back with Vertical axis:
-        myTransform.Translate(0, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
+        //myTransform.Translate(0, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
+        //GetComponent<Rigidbody>().AddForce(0, 0, Input.GetAxis("Vertical") * Time.deltaTime);
     }
 
     private void JumpToWall(Vector3 point, Vector3 normal)
