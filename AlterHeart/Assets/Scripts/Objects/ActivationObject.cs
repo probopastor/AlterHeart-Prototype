@@ -12,6 +12,6 @@ public class ActivationObject : MonoBehaviour
 {
     public virtual void Activate()
     {
-
+        print("I have been activated");
     }
 }

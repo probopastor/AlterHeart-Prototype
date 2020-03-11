@@ -16,8 +16,6 @@ public class ButtonController : MonoBehaviour
     public AudioSource SoundEffectSource;
     public AudioClip buttonSound;
 
-    public GameObject somethingChangedText;
-
     public bool isPushed;
     public ActivationObject activationObject;
 
@@ -27,12 +25,17 @@ public class ButtonController : MonoBehaviour
 
     private Material unHighlightColor;
     public Material highlightColor;
+    RealityController rc;
+
+    public bool anotherDimensionEffect;
 
     // Start is called before the first frame update
     void Start()
     {
+        rc = GameObject.FindGameObjectWithTag("RealityController").GetComponent<RealityController>();
         isPushed = false;
         unHighlightColor = GetComponent<MeshRenderer>().material;
+        
     }
 
 
@@ -65,13 +68,11 @@ public class ButtonController : MonoBehaviour
             Destroy(pushParticlesObj, 3f);
 
             activationObject.Activate();
+
+            if(anotherDimensionEffect)
+                StartCoroutine(rc.TextChange());
         }
     }
 
-    public IEnumerator TextChange()
-    {
-        somethingChangedText.SetActive(true);
-        yield return new WaitForSeconds(3f);
-
-    }
+    
 }

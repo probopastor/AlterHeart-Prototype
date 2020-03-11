@@ -9,6 +9,7 @@ TagManager:
   - Button
   - Obstacle
   - Ground
+  - RealityController
   layers:
   - Default
   - TransparentFX

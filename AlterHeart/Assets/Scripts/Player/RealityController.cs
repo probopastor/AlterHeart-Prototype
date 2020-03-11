@@ -40,6 +40,8 @@ public class RealityController : MonoBehaviour
     public int currentReality = 1;
     private bool realitiesPaused;
 
+    public GameObject somethingChangedText;
+
     private void Start()
     {
         teleportationDistance = teleportRealityTwo.position - teleportRealityOne.position;
@@ -64,6 +66,8 @@ public class RealityController : MonoBehaviour
         DimensionOnePoints = GameObject.FindGameObjectsWithTag("DimensionOnePoints");
         DimensionTwoPoints = new GameObject[DimensionOnePoints.Length];
         GeneratePartnerPoints();
+        somethingChangedText.SetActive(false);
+
     }
 
     void Update()
@@ -283,5 +287,12 @@ public class RealityController : MonoBehaviour
             }
         }
 
+    }
+
+    public IEnumerator TextChange()
+    {
+        somethingChangedText.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        somethingChangedText.SetActive(false);
     }
 }
