@@ -410,8 +410,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6be5bc5b1674d2b468d828a08062c702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SoundEffectSource: {fileID: 0}
+  buttonSound: {fileID: 8300000, guid: 4a3de2e9256215044af26aa82d5d2bad, type: 3}
   isPushed: 0
   activationObject: {fileID: 0}
+  pushParticles: {fileID: 789479901834569494, guid: 8df78d35a499fc749876f5679aad4a30,
+    type: 3}
+  yParticleModifier: 0
+  unHighlightColor: {fileID: 2100000, guid: e6c9a5da47acc40459fa453d3ab43bcc, type: 2}
+  highlightColor: {fileID: 2100000, guid: 36d8b3ca5397a154695a0629d417f047, type: 2}
+  anotherDimensionEffect: 0
 --- !u!65 &954975465942964539
 BoxCollider:
   m_ObjectHideFlags: 0

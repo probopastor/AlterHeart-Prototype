@@ -23,7 +23,7 @@ public class ButtonController : MonoBehaviour
     GameObject pushParticlesObj;
     public float yParticleModifier = 0f;
 
-    private Material unHighlightColor;
+    public Material unHighlightColor;
     public Material highlightColor;
     RealityController rc;
 
@@ -34,7 +34,6 @@ public class ButtonController : MonoBehaviour
     {
         rc = GameObject.FindGameObjectWithTag("RealityController").GetComponent<RealityController>();
         isPushed = false;
-        unHighlightColor = GetComponent<MeshRenderer>().material;
         
     }
 
