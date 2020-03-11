@@ -1,9 +1,12 @@
 ﻿/*****************************************************************************
 // File Name: TeleportPoints.cs
-// Author:
+// Author: Scott
 // Creation Date: 2/11/2020
 //
-// Brief Description:
+// Brief Description: Shares a partner in the opposite dimension, which can be accessed 
+in order to determine where the player will appear when they switch dimensions.
+If this does not have a partner assigned, it will generate its own partner at start() 
+in RealityController().
 *****************************************************************************/
 using UnityEngine;
 

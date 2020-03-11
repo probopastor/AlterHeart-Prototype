@@ -1,5 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/*****************************************************************************
+// File Name: MainMenuManager.cs
+// Author: Billy
+//
+// Brief Description: Defines the use of buttons in the main menu
+*****************************************************************************/
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

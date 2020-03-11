@@ -1,5 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/*****************************************************************************
+// File Name: WinShapeController.cs
+// Author: Billy
+//
+// Brief Description: The object that, when interacted with, allows the player to 
+win the game. Merely activates the panel that states "You win" 
+*****************************************************************************/
+
 using UnityEngine;
 
 public class WinShapeController : MonoBehaviour

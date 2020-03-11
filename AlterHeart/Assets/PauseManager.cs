@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*****************************************************************************
+// File Name: PauseManager.cs
+// Author: Billy
+//
+// Brief Description: Manages use of the pause menu. When the pause button is pressed,
+UI elements are disabled and a menu appears with buttons able to navigate scenes and restart the scene
+*****************************************************************************/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
