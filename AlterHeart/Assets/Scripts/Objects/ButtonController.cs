@@ -1,5 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/*****************************************************************************
+// File Name: ButtonController.cs
+// Author: Billy
+//
+// Brief Description: Defines the use of buttons in game. When buttons are selected
+by the cursor, they change color. They also have an object (assigned in editor) 
+that is activated when the button is pressed.
+*****************************************************************************/
+
 using UnityEngine;
 
 public class ButtonController : MonoBehaviour
@@ -8,7 +15,7 @@ public class ButtonController : MonoBehaviour
     public AudioClip buttonSound;
 
     public bool isPushed;
-    public GameObject activationObject;
+    public ActivationObject activationObject;
 
     public ParticleSystem pushParticles;
     GameObject pushParticlesObj;
@@ -21,7 +28,6 @@ public class ButtonController : MonoBehaviour
     void Start()
     {
         isPushed = false;
-        activationObject.SetActive(true);
         unHighlightColor = GetComponent<MeshRenderer>().material;
     }
 
@@ -54,7 +60,7 @@ public class ButtonController : MonoBehaviour
 
             Destroy(pushParticlesObj, 3f);
 
-            activationObject.SetActive(false);
+            activationObject.Activate() ;
         }
     }
 }

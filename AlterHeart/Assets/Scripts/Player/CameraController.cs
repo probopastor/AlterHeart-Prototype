@@ -1,4 +1,10 @@
-﻿//TEST 1
+﻿/*****************************************************************************
+// File Name: CameraController.cs
+// Author: Billy
+//
+// Brief Description: Controls camera movement with the use of the mouse. 
+Also manages the crosshair in the UI and highlights selectable objects in the world
+*****************************************************************************/
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -76,6 +82,7 @@ public class CameraController : MonoBehaviour
                 lastButton.PushButton();
             }
         }
+        //if the crossair hits an object that will cause you to teleport (ONLY USED IN PLAYTEST)
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, raycastLayerTeleporter))
         {
             crossHair.sprite = crossHairSelected;
@@ -88,6 +95,7 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
+        //if the object required to win the game is clicked
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, winLayer))
         {
             crossHair.sprite = crossHairSelected;
@@ -100,7 +108,7 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
-        else
+        else //if nothing is selected, default crosshair and unhighlight the most recent button
         {
             crossHair.sprite = crossHairUnselected;
             if (lastButton != null) //unhighlights the last button and erases its reference as soon as the player moves away
@@ -126,12 +134,5 @@ public class CameraController : MonoBehaviour
 
             //Debug.Log(hit.collider.isTrigger);  
         }*/
-    }
-
-
-    void LateUpdate()
-    {
-
-        //transform.position = playerBody.position + startPos;
     }
 }

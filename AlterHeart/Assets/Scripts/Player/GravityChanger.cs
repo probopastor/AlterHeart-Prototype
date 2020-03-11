@@ -1,9 +1,10 @@
 ﻿/*****************************************************************************
 // File Name: GravityChanger.cs
-// Author:
+// Author: Aldonaletto (https://answers.unity.com/users/11109/aldonaletto.html)
 // Creation Date: 
 //
-// Brief Description:
+// Brief Description: A test script for wall-walking created based on another's code. 
+Refer to this for original, untweaked functionality
 *****************************************************************************/
 using UnityEngine;
 using System.Collections;

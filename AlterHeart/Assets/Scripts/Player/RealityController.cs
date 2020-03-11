@@ -1,9 +1,14 @@
 ﻿/*****************************************************************************
 // File Name: RealityController.cs
-// Author:
+// Author: Scott, Billy
 // Creation Date: 2/6/2020
 //
-// Brief Description:
+// Brief Description: Controls movement between "dimensions". When the button is pressed,
+the game determines which teleportPoint is closest to the player and teleports them to its partner
+in the other map.
+
+At the start of the game, the game creates partners in the mirror dimension for all 
+points that do not already have assigned partners
 *****************************************************************************/
 
 using System.Collections;
