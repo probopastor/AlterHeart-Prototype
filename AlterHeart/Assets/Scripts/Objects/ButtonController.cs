@@ -15,7 +15,7 @@ public class ButtonController : MonoBehaviour
     public AudioClip buttonSound;
 
     public bool isPushed;
-    public GameObject activationObject;
+    public ActivationObject activationObject;
 
     public ParticleSystem pushParticles;
     GameObject pushParticlesObj;
@@ -28,7 +28,6 @@ public class ButtonController : MonoBehaviour
     void Start()
     {
         isPushed = false;
-        activationObject.SetActive(true);
         unHighlightColor = GetComponent<MeshRenderer>().material;
     }
 
@@ -61,7 +60,7 @@ public class ButtonController : MonoBehaviour
 
             Destroy(pushParticlesObj, 3f);
 
-            activationObject.SetActive(false);
+            activationObject.Activate() ;
         }
     }
 }
