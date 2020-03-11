@@ -8,11 +8,15 @@ that is activated when the button is pressed.
 *****************************************************************************/
 
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class ButtonController : MonoBehaviour
 {
     public AudioSource SoundEffectSource;
     public AudioClip buttonSound;
+
+    public GameObject somethingChangedText;
 
     public bool isPushed;
     public ActivationObject activationObject;
@@ -31,7 +35,7 @@ public class ButtonController : MonoBehaviour
         unHighlightColor = GetComponent<MeshRenderer>().material;
     }
 
-    
+
     public void Highlight()
     {
         print("Highlighting");
@@ -47,7 +51,7 @@ public class ButtonController : MonoBehaviour
 
     public void PushButton()
     {
-        if(!isPushed)
+        if (!isPushed)
         {
             isPushed = true;
             SoundEffectSource.clip = buttonSound;
@@ -60,7 +64,14 @@ public class ButtonController : MonoBehaviour
 
             Destroy(pushParticlesObj, 3f);
 
-            activationObject.Activate() ;
+            activationObject.Activate();
         }
+    }
+
+    public IEnumerator TextChange()
+    {
+        somethingChangedText.SetActive(true);
+        yield return new WaitForSeconds(3f);
+
     }
 }
