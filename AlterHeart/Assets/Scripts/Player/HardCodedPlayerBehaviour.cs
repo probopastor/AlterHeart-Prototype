@@ -1,22 +1,22 @@
 ﻿/*****************************************************************************
-// File Name: PlayerBehaviour.cs
-// Author:
+// File Name: HardCodedPlayerBehaviour.cs
+// Author: Billy
 // Creation Date: 2/6/2020
 //
-// Brief Description: Allows player movement via addForce(). When in dimension 1, the player can walk on walls. In dimension 2,
-the player is able to jump. 
-//Known Glitch 1: Movement for the wall-walking forces player to move forward in all axes, not just z and x. 
-We are not currently able to stop the player from lifting off the "ground" when in that dimension.
+// Brief Description: Allows player movement on walls in a hardcoded fashion. Walls 
+must be tagged in a proper way to allow wall-walking
 *****************************************************************************/
 
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class PlayerBehaviour : MonoBehaviour
+public class HardCodedPlayerBehaviour : MonoBehaviour
 {
     public Transform cameraAngle;
     public Transform cameraTransform;
+
+    public LayerMask platformCheck;
 
     private Vector2 input;
 
@@ -27,6 +27,7 @@ public class PlayerBehaviour : MonoBehaviour
     public float moveSpeed;
     public float moveLimit = 10;
     public float jumpForce;
+    public float fallForce = 2;
 
     public float jumpForceDimension1 = 0f;
     public float jumpForceDimension2 = 1f;
@@ -51,13 +52,17 @@ public class PlayerBehaviour : MonoBehaviour
     private Vector3 startNormal;
     private Vector3 startForward;
 
-    private bool jumpingToWall = false; 
+    private bool jumpingToWall = false;
 
     private BoxCollider boxCollider; // drag BoxCollider ref in editor
 
     private bool onWall = false;
 
     private bool dimensionSwitchedBack;
+
+    bool isCeiling = false;
+    bool isRightWall = false;
+    bool isTopWall = false;
 
     private void Start()
     {
@@ -73,18 +78,43 @@ public class PlayerBehaviour : MonoBehaviour
         distGround = boxCollider.size.y - boxCollider.center.y; // distance from transform.position to ground
 
         dimensionSwitchedBack = false;
+
+        bool isCeiling = false;
+        bool isRightWall = false;
+        bool isTopWall = false;
+    }
+
+    private void FixedUpdate()
+    {
+        //Always apply downward force depending on which way is "up"
+        rb.AddForce(-myGravity * myNormal);
+
     }
 
     private void Update()
     {
         onWall = myNormal != Vector3.up;
 
-        if (realityController.currentReality == 1) //Wall walking activated
+        if (realityController.currentReality == 2)
         {
             dimensionSwitchedBack = false;
+        }
+
+        if ((gameObject.transform.position.y <= -1.5f) && !secondPhase)
+        {
+            SceneManager.LoadScene("ProbuilderTest");
+        }
+        else if ((gameObject.transform.position.y <= -1.5f) && secondPhase)
+        {
+            gameObject.transform.position = secondPhaseStart.transform.position;
+        }
+
+
+        if (realityController.currentReality == 2) //Aka dimension 1
+        {
             WallWalking();
         }
-        else if(realityController.currentReality == 2)
+        else if (realityController.currentReality == 1)
         {
             NormMovement();
 
@@ -93,18 +123,41 @@ public class PlayerBehaviour : MonoBehaviour
                 Jump();
             }
         }
-        
+
+        RaycastHit platformHit;
+        if (Physics.Raycast(transform.position, -myNormal, out platformHit, 2f, platformCheck))
+        {
+            if (platformHit.collider.tag == "Floor" || platformHit.collider.tag == "Ceiling" || platformHit.collider.tag == "Ground")
+            {
+                Debug.Log("Ceiling True");
+                isCeiling = true;
+                isRightWall = false;
+                isTopWall = false;
+            }
+            else if (platformHit.collider.tag == "TopWall" || platformHit.collider.tag == "BottomWall")
+            {
+                Debug.Log("Top True");
+
+                isCeiling = false;
+                isRightWall = false;
+                isTopWall = true;
+            }
+            else if (platformHit.collider.tag == "LeftWall" || platformHit.collider.tag == "RightWall")
+            {
+                Debug.Log("Right True");
+
+                isCeiling = false;
+                isRightWall = true;
+                isTopWall = false;
+            }
+        }
+
     }
 
-    private void LateUpdate()
-    {
-        rb.AddForce(-myGravity * myNormal);
-    }
 
     private void NormMovement()
     {
-        //Switches back to normal movement if back to jumping dimension
-        if(!dimensionSwitchedBack)
+        if (!dimensionSwitchedBack)
         {
             Debug.Log("yes");
 
@@ -112,12 +165,11 @@ public class PlayerBehaviour : MonoBehaviour
             //transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
 
             //Quaternion playerRot = Quaternion.LookRotation(new Vector3(0, 0, 0), startNormal);
-
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             myNormal = startNormal;
             dimensionSwitchedBack = true;
         }
-        
+
 
         input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         input = Vector2.ClampMagnitude(input, 1);
@@ -138,10 +190,9 @@ public class PlayerBehaviour : MonoBehaviour
             rb.AddForce(targetDirection);
         }
 
-        //when not on the ground, pull the player downward
-        if(!OnGround())
+        if (!OnGround())
         {
-            rb.AddForce(-myGravity * myNormal);
+            rb.AddForce(0, -fallForce, 0);
         }
     }
 
@@ -152,21 +203,27 @@ public class PlayerBehaviour : MonoBehaviour
         Ray ray;
         RaycastHit hit;
 
-        if (Input.GetButtonDown("Jump")) //Just move to the wall
+        if (Input.GetButtonDown("Jump"))
         {
             ray = new Ray(transform.position, transform.forward);
-
             if (Physics.Raycast(ray, out hit, jumpRange))
             { // wall ahead?
                 JumpToWall(hit.point, hit.normal); // yes: jump to the wall
             }
+            else if (isGrounded)
+            { // no: if grounded, jump up
+                rb.velocity += jumpForce * myNormal;
+            }
         }
+
+        // movement code - turn left/right with Horizontal axis:
 
         // update surface normal and isGrounded:
         ray = new Ray(transform.position, -myNormal); // cast ray downwards
 
-        if (Physics.Raycast(ray, out hit)) //if the ray hits something below player
+        if (Physics.Raycast(ray, out hit))
         {
+            // use it to update myNormal and isGrounded
             isGrounded = hit.distance <= distGround + deltaGround;
             surfaceNormal = hit.normal;
         }
@@ -185,22 +242,37 @@ public class PlayerBehaviour : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(myForward, myNormal);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
 
-        if (isGrounded)
-        {
-            input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            input = Vector2.ClampMagnitude(input, 1);
+        // move the character forth/back with Vertical axis:
+        //transform.Translate(0, 0, Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
 
-            if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
+        if ((rb.velocity.x < moveLimit && rb.velocity.x > -moveLimit) || (rb.velocity.z < moveLimit && rb.velocity.z > -moveLimit))
+        {
+            Vector3 targetDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+            targetDirection = Camera.main.transform.TransformDirection(targetDirection) * moveSpeed;
+
+            Vector3 instanceTargetDirection = targetDirection;
+
+            if (isCeiling)
             {
-                Vector3 targetDirection = Camera.main.transform.TransformDirection(new Vector3(input.x, 0, input.y) * moveSpeed);
-                rb.AddForce(targetDirection);
+                targetDirection.x = instanceTargetDirection.x;
+                targetDirection.z = instanceTargetDirection.z;
+                targetDirection.y = 0.0f;
             }
-        }
-        else
-        {
-            rb.AddForce(-myGravity * myNormal *2); //pins character to ground whenever they manage to fly upward
-        }
+            else if (isTopWall)
+            {
+                targetDirection.x = instanceTargetDirection.x;
+                targetDirection.y = instanceTargetDirection.y;
+                targetDirection.z = 0.0f;
+            }
+            else if (isRightWall)
+            {
+                targetDirection.x = instanceTargetDirection.x;
+                targetDirection.y = instanceTargetDirection.y;
+                targetDirection.x = 0.0f;
+            }
 
+            rb.AddForce(targetDirection);
+        }
     }
 
     /// <summary>
@@ -221,7 +293,7 @@ public class PlayerBehaviour : MonoBehaviour
         Vector3 myForward = Vector3.Cross(transform.right, normal);
         Quaternion newRot = Quaternion.LookRotation(myForward, normal);
 
-        StartCoroutine(JumpTime(origPos, origRot, newPos, newRot, normal));
+        StartCoroutine(jumpTime(origPos, origRot, newPos, newRot, normal));
     }
 
     /// <summary>
@@ -233,7 +305,7 @@ public class PlayerBehaviour : MonoBehaviour
     /// <param name="newRot">The player's new rotation</param>
     /// <param name="normal">Which direction is "up" for the player</param>
     /// <returns></returns>
-    private IEnumerator JumpTime(Vector3 origPos, Quaternion origRot, Vector3 newPos, Quaternion newRot, Vector3 normal)
+    private IEnumerator jumpTime(Vector3 origPos, Quaternion origRot, Vector3 newPos, Quaternion newRot, Vector3 normal)
     {
         for (float t = 0.0f; t < 1.0f;)
         {
@@ -265,6 +337,10 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    private void GravityChange()
+    {
+
+    }
 
     /// <summary>
     /// Applies upward force if on the ground
@@ -278,7 +354,7 @@ public class PlayerBehaviour : MonoBehaviour
     }
 
     /// <summary>
-    /// Whether or not the player is currently on the ground. Only use for jumping dimension code
+    /// Whether or not the player is currently on the ground
     /// </summary>
     /// <returns></returns>
     private bool OnGround()
@@ -289,10 +365,9 @@ public class PlayerBehaviour : MonoBehaviour
             if (Hit.transform.gameObject != null)
             {
                 result = true;
-                print("OnGround() says: On the ground");
             }
         }
-        
+
         return result;
     }
 }
