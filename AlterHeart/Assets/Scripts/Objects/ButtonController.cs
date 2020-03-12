@@ -46,8 +46,11 @@ public class ButtonController : MonoBehaviour
 
     public void UnHighlight()
     {
-        print("Better un highlight");
-        GetComponent<MeshRenderer>().material = unHighlightColor;
+        if (!isPushed)
+        {
+            print("Better un highlight");
+            GetComponent<MeshRenderer>().material = unHighlightColor;
+        }
 
     }
 
@@ -70,8 +73,6 @@ public class ButtonController : MonoBehaviour
 
             if(anotherDimensionEffect)
                 StartCoroutine(rc.TextChange());
-
-            gameObject.SetActive(false);
         }
     }
 
