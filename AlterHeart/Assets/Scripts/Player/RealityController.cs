@@ -84,7 +84,7 @@ public class RealityController : MonoBehaviour
 
     /// <summary>
     /// Coroutine changes reality player is in based on the mirrored 
-    /// current player position.
+    /// current player position. [UNUSED]
     /// </summary>
     private IEnumerator ChangeRealities()
     {
@@ -160,7 +160,7 @@ public class RealityController : MonoBehaviour
     /// Teleports player based on the position of the closest teleport point
     /// </summary>
     /// <returns></returns>
-    private IEnumerator SwapRealities()
+    public IEnumerator SwapRealities()
     {
         if (canTeleport) //only if it is possible to teleport
         {

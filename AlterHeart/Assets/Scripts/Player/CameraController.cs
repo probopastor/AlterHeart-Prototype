@@ -82,19 +82,6 @@ public class CameraController : MonoBehaviour
                 lastButton.PushButton();
             }
         }
-        //if the crossair hits an object that will cause you to teleport (ONLY USED IN PLAYTEST)
-        else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, raycastLayerTeleporter))
-        {
-            crossHair.sprite = crossHairSelected;
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                if (hit.collider.GetComponent<TeleportShapeController>() != null)
-                {
-                    hit.collider.GetComponent<TeleportShapeController>().TeleportPlayerToPoint();
-                }
-            }
-        }
         //if the object required to win the game is clicked
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, clickDistance, winLayer))
         {

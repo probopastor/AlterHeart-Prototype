@@ -27,14 +27,6 @@ public class TeleportPoints : MonoBehaviour
 
     public void SetMaterial(Material myNewMaterial)
     {
-        print("Attempting to set material");
-
-        if (particleColor != null)
-            print("This exists");
-        else
-        {
-            print("This does not exist");
-        }
         myMaterial = myNewMaterial;
 
         //particleColor.material = myNewMaterial;

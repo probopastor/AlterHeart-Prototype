@@ -20,6 +20,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private Vector2 input;
 
+    public Transform respawnPoint;
     private Rigidbody rb;
     public RealityController rc;
     public float myGravity;
@@ -30,11 +31,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     public float jumpForceDimension1 = 0f;
     public float jumpForceDimension2 = 1f;
-
-    public bool secondPhase;
-    public GameObject secondPhaseStart;
-
-    public RealityController realityController;
 
     //Wall walking related
     [HideInInspector] public bool wallWalker = false;
@@ -59,11 +55,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool dimensionSwitchedBack; //whether or not you have switched back to the jump dimension
 
+
     private void Start()
     {
-        realityController = FindObjectOfType<RealityController>();
         rb = GetComponent<Rigidbody>();
-        secondPhase = false;
         jumpForce = jumpForceDimension2;
 
         boxCollider = GetComponent<BoxCollider>();
@@ -79,12 +74,12 @@ public class PlayerBehaviour : MonoBehaviour
     {
         onWall = myNormal != Vector3.up;
 
-        if (realityController.currentReality == 2) //Wall walking activated
+        if (rc.currentReality == 2) //Wall walking activated
         {
             dimensionSwitchedBack = false;
             WallWalking();
         }
-        else if(realityController.currentReality == 1)
+        else if(rc.currentReality == 1)
         {
             NormMovement();
 
@@ -106,7 +101,6 @@ public class PlayerBehaviour : MonoBehaviour
         //Switches back to normal movement if back to jumping dimension
         if(!dimensionSwitchedBack)
         {
-            Debug.Log("yes");
 
             //Quaternion targetRot = Quaternion.LookRotation(startForward, startNormal);
             //transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpSpeed * Time.deltaTime);
@@ -257,13 +251,6 @@ public class PlayerBehaviour : MonoBehaviour
         //set normal back to floor
         //rotate character to proper floor position
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponent<GravityChanger>() != null)
-        {
-
-        }
-    }
 
 
     /// <summary>
@@ -274,6 +261,17 @@ public class PlayerBehaviour : MonoBehaviour
         if (OnGround())
         {
             rb.AddForce(Vector3.up * jumpForce);
+        }
+    }
+
+    public void Respawn()
+    {
+        transform.position = respawnPoint.position;
+        rb.velocity = Vector3.zero;
+
+        if (rc.currentReality != 1)
+        {
+            StartCoroutine(rc.SwapRealities()); 
         }
     }
 
@@ -289,10 +287,18 @@ public class PlayerBehaviour : MonoBehaviour
             if (Hit.transform.gameObject != null)
             {
                 result = true;
-                print("OnGround() says: On the ground");
             }
         }
         
         return result;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Respawn")
+        {
+            print("Respawning");
+            Respawn();
+        }
     }
 }
