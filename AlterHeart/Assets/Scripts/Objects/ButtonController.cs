@@ -56,8 +56,8 @@ public class ButtonController : MonoBehaviour
         if (!isPushed)
         {
             isPushed = true;
-            SoundEffectSource.clip = buttonSound;
-            SoundEffectSource.Play();
+            //SoundEffectSource.clip = buttonSound;
+            //SoundEffectSource.Play();
             Debug.Log("Button Pushed ");
 
             Vector3 landParticlesLocation = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + yParticleModifier, gameObject.transform.position.z);

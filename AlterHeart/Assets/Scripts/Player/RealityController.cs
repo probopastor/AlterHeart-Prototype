@@ -21,8 +21,8 @@ public class RealityController : MonoBehaviour
     public static bool canTeleport;
     public GameObject collisionSphere;
     
-    public GameObject controlPanelDimension1;
-    public GameObject controlPanelDimension2;
+    public GameObject jumpControls;
+    public GameObject wallWalkControls;
 
     public Transform teleportRealityOne;
     public Transform teleportRealityTwo;
@@ -48,20 +48,19 @@ public class RealityController : MonoBehaviour
 
         //Set initial variables for reality two
         canTeleport = true;
-        currentReality = 2;
+        currentReality = 1;
 
         foreach(Light item in directionalLights)
         {
-            item.color = dimensionLightColor[1]; 
+            item.color = dimensionLightColor[0]; 
         }
 
         realitiesPaused = false;
 
-        player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
-        player.GetComponent<PlayerBehaviour>().wallWalker = false;
+        player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
 
-        controlPanelDimension1.SetActive(false);
-        controlPanelDimension2.SetActive(true);
+        jumpControls.SetActive(true);
+        wallWalkControls.SetActive(false);
 
         DimensionOnePoints = GameObject.FindGameObjectsWithTag("DimensionOnePoints");
         DimensionTwoPoints = new GameObject[DimensionOnePoints.Length];
@@ -112,8 +111,8 @@ public class RealityController : MonoBehaviour
                         item.color = dimensionLightColor[1];
                     }
 
-                    controlPanelDimension1.SetActive(false);
-                    controlPanelDimension2.SetActive(true);
+                    jumpControls.SetActive(false);
+                    wallWalkControls.SetActive(true);
                     //Player cannot jump in this dimension, but can walk on walls
                     player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension2;
                     player.GetComponent<PlayerBehaviour>().wallWalker = false;
@@ -143,8 +142,8 @@ public class RealityController : MonoBehaviour
                         item.color = dimensionLightColor[0];
                     }
 
-                    controlPanelDimension1.SetActive(true);
-                    controlPanelDimension2.SetActive(false);
+                    jumpControls.SetActive(true);
+                    wallWalkControls.SetActive(false);
 
                     player.GetComponent<PlayerBehaviour>().jumpForce = player.GetComponent<PlayerBehaviour>().jumpForceDimension1;
                     player.GetComponent<PlayerBehaviour>().wallWalker = true;
@@ -170,8 +169,12 @@ public class RealityController : MonoBehaviour
             newPos = ClosestPoint();
             player.transform.position = newPos;
 
+            
             if (currentReality == 1)
             {
+                jumpControls.SetActive(true);
+                wallWalkControls.SetActive(false);
+
                 currentReality = 2;
                 foreach (Light item in directionalLights)
                 {
@@ -180,6 +183,8 @@ public class RealityController : MonoBehaviour
             }
             else if (currentReality == 2)
             {
+                jumpControls.SetActive(true);
+                wallWalkControls.SetActive(false);
                 currentReality = 1;
                 foreach (Light item in directionalLights)
                 {
@@ -271,19 +276,20 @@ public class RealityController : MonoBehaviour
         if (!realitiesPaused)
         {
             realitiesPaused = true;
-            controlPanelDimension1.SetActive(false);
-            controlPanelDimension2.SetActive(false);
+            jumpControls.SetActive(false);
+            wallWalkControls.SetActive(false);
         }
         else if (realitiesPaused)
         {
             realitiesPaused = false;
             if (currentReality == 1)
             {
-                controlPanelDimension1.SetActive(true);
+                jumpControls.SetActive(true);
             }
             else if (currentReality == 2)
             {
-                controlPanelDimension2.SetActive(true);
+                wallWalkControls.SetActive(true);
+                
             }
         }
 

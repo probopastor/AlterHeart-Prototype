@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class ActivationObject : MonoBehaviour
 {
+    [HideInInspector]public bool disappears;
+    [HideInInspector] public bool appears;
     public virtual void Activate()
     {
         print("I have been activated");

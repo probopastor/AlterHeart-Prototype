@@ -57,7 +57,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool onWall = false;
 
-    private bool dimensionSwitchedBack;
+    private bool dimensionSwitchedBack; //whether or not you have switched back to the jump dimension
 
     private void Start()
     {
@@ -72,19 +72,19 @@ public class PlayerBehaviour : MonoBehaviour
         startForward = Vector3.forward;
         distGround = boxCollider.size.y - boxCollider.center.y; // distance from transform.position to ground
 
-        dimensionSwitchedBack = false;
+        dimensionSwitchedBack = true;
     }
 
     private void Update()
     {
         onWall = myNormal != Vector3.up;
 
-        if (realityController.currentReality == 1) //Wall walking activated
+        if (realityController.currentReality == 2) //Wall walking activated
         {
             dimensionSwitchedBack = false;
             WallWalking();
         }
-        else if(realityController.currentReality == 2)
+        else if(realityController.currentReality == 1)
         {
             NormMovement();
 
