@@ -2016,6 +2016,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 954975465942964531, guid: f89c3936a5a7c4740ab3f5d5b633a991,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 954975465942964540, guid: f89c3936a5a7c4740ab3f5d5b633a991,
         type: 3}
       propertyPath: m_Mesh
@@ -10428,7 +10433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &873034403
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14065,7 +14070,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-78652
+  m_Name: pb_Mesh-106522
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20209,6 +20214,29 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1262523522 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 954975465942964531, guid: f89c3936a5a7c4740ab3f5d5b633a991,
+    type: 3}
+  m_PrefabInstance: {fileID: 218366181}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1262523530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262523522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31626fa59cbff354ba5c64a36f6d8107, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1440544643}
+  winPanel: {fileID: 187793239}
+  crosshair: {fileID: 1028540475}
+  panelDimension1: {fileID: 1339586196}
+  panelDimension2: {fileID: 1019652065}
 --- !u!1 &1262601844
 GameObject:
   m_ObjectHideFlags: 0
@@ -40637,7 +40665,8 @@ MonoBehaviour:
     Move Mouse- Look Around
 
 
-    Space - Jump or Stick to Wall'
+    Space - Jump(Dimension 1) or Stick to
+    Wall (Dimension 2)'
 --- !u!222 &1998068415
 CanvasRenderer:
   m_ObjectHideFlags: 0
