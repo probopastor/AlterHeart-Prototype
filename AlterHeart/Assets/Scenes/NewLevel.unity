@@ -10428,7 +10428,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &873034403
 RectTransform:
   m_ObjectHideFlags: 0
@@ -40637,9 +40637,7 @@ MonoBehaviour:
     Move Mouse- Look Around
 
 
-    If In Dimension 2:
-
-    Space- Jump'
+    Space - Jump or Stick to Wall'
 --- !u!222 &1998068415
 CanvasRenderer:
   m_ObjectHideFlags: 0
