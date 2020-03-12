@@ -198,7 +198,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            rb.AddForce(-myGravity * myNormal *2); //pins character to ground whenever they manage to fly upward
+            rb.AddForce(-myGravity * myNormal); //pins character to ground whenever they manage to fly upward
         }
 
     }
