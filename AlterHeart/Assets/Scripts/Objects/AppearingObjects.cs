@@ -1,9 +1,9 @@
 ﻿/*****************************************************************************
 // File Name: AppearingObjects.cs
-// Author:
-// Creation Date: 
+// Author: Scott Acker
+// Creation Date: 3/11/2020
 //
-// Brief Description:
+// Brief Description: Makes objects appear when the connected button calls Activate
 *****************************************************************************/
 using UnityEngine;
 

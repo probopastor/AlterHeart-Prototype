@@ -70,6 +70,8 @@ public class ButtonController : MonoBehaviour
 
             if(anotherDimensionEffect)
                 StartCoroutine(rc.TextChange());
+
+            gameObject.SetActive(false);
         }
     }
 
