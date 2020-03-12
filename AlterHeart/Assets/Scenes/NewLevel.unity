@@ -31788,7 +31788,7 @@ MonoBehaviour:
   - {fileID: 24453661}
   - {fileID: 1248162150}
   dimensionLightColor:
-  - {r: 0.6273585, g: 1, b: 0.94019336, a: 1}
+  - {r: 0.503827, g: 0.6981132, b: 0.6651212, a: 1}
   - {r: 1, g: 0.8254717, b: 0.8897716, a: 1}
   player: {fileID: 1440544643}
   currentReality: 1
