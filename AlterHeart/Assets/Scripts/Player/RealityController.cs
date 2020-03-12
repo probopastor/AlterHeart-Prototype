@@ -212,6 +212,10 @@ public class RealityController : MonoBehaviour
                 Vector3 oppositePos = thisPoint.transform.position + teleportationDistance; //The matching position in the new dimension
                 GameObject newPoint = Instantiate(teleportPointPrefab, oppositePos, Quaternion.identity); //new point at that destination
 
+
+                Material matchingMaterial = thisPoint.GetComponent<TeleportPoints>().myMaterial;
+                newPoint.GetComponent<TeleportPoints>().SetMaterial(matchingMaterial);
+
                 //Assign these to each other as partners
                 thisPoint.GetComponent<TeleportPoints>().partner = newPoint;
                 newPoint.GetComponent<TeleportPoints>().partner = thisPoint;

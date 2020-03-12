@@ -110,6 +110,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partner: {fileID: 0}
   myLocation: {x: 0, y: 0, z: 0}
+  myMaterial: {fileID: 2100000, guid: 1dd9764240b0f1c4cb7d4856b70b1cd3, type: 2}
+  particles: {fileID: 7774928606051607270}
 --- !u!1 &1222182523890415088
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +227,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 0.26
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -278,7 +280,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.97
+      scalar: 1.82
       minScalar: 5
       maxCurve:
         serializedVersion: 2

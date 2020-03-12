@@ -14,10 +14,30 @@ public class TeleportPoints : MonoBehaviour
 {
     public GameObject partner;
     public Vector3 myLocation;
+    public Material myMaterial;
+    public ParticleSystem particles;
+    private Renderer particleColor;
 
     private void Start()
     {
         myLocation = transform.position;
+        particleColor = particles.GetComponent<ParticleSystemRenderer>();
+        particleColor.material = myMaterial;
+    }
+
+    public void SetMaterial(Material myNewMaterial)
+    {
+        print("Attempting to set material");
+
+        if (particleColor != null)
+            print("This exists");
+        else
+        {
+            print("This does not exist");
+        }
+        myMaterial = myNewMaterial;
+
+        //particleColor.material = myNewMaterial;
     }
 
     public float CompareDistance(Vector3 player)
